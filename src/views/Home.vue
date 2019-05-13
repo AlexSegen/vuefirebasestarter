@@ -1,18 +1,23 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Welcome</h1>
+    <p>You can now <a href="javascript:void(0);" @click="handleSignOut">Sign Out</a></p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import firebase from 'firebase'
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld
+  methods: {
+    handleSignOut() {
+      firebase.auth().signOut().then(() => {
+        this.$router.replace('login');
+      })
+    }
   }
 }
 </script>
