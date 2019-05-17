@@ -27,7 +27,7 @@
                                 <div class="field has-text-centered">
                                     <div class="file is-default is-small">
                                         <label class="file-label">
-                                        <input class="file-input" type="file" name="resume">
+                                        <input class="file-input" type="file" name="resume" @change="onFileChanged">
                                         <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
                                         </label>
                                     </div>
@@ -106,11 +106,16 @@
 </template>
 
 <script>
+
+import firebase from 'firebase';
+
+const storageService = firebase.storage();
+const storageRef = storageService.ref();
+
 import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
 import { mapGetters, mapActions } from "vuex";
 import authService from '@/services/auth.service'
-
 
 export default {
     name: 'profile',
@@ -122,6 +127,7 @@ export default {
             profile: '',
             newPassword: '',
             confirmPassword: '',
+            selectedFile: null
         }
     },
     computed: {
@@ -158,6 +164,23 @@ export default {
             } catch (error) {
                 notification.error(error.message)
             }
+        },
+        onFileChanged (event) {
+            this.selectedFile = event.target.files[0]
+            this.onUpload()
+        },
+        onUpload() {
+            const uploadTask = storageRef.child(`images/${this.selectedFile.name}`).put(this.selectedFile); //create a child directory called images, and place the file inside this directory
+            uploadTask.on('state_changed', (snapshot) => {
+                console.log(snapshot);
+            // Observe state change events such as progress, pause, and resume
+            }, (error) => {
+                // Handle unsuccessful uploads
+                console.log(error);
+            }, () => {
+                // Do something once upload is complete
+                console.log('success');
+            });
         }
     },
 }
