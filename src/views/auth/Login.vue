@@ -1,10 +1,44 @@
 <template>
-    <div class="login">
-        <h1>Sign In</h1>
-        <input type="email" placeholder="Email" v-model="email"><br>
-        <input type="password" placeholder="password" v-model="password"><br>
-        <button @click="handleLogin">Connection</button>
-        <p>Don't have an account? <router-link to="/register">Create one</router-link></p>
+    <div class="login container">
+        <div class="card card-auth">
+            <div class="card-content ">
+                <div class="field">
+                    <h1>Sign In</h1>
+                </div>
+                <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                    <input class="input" type="email" placeholder="Email" v-model="email" :disabled="authenticating">
+                    <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-small is-right has-text-success" v-if="emailReady">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </p>
+                </div>
+                <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                    <input class="input" type="password" placeholder="Password" v-model="password" :disabled="authenticating">
+                    <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                    </span>
+                    <span class="icon is-small is-right has-text-success" v-if="passwordReady">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </p>
+                </div>
+                <div class="field">
+                    <p>Don't have an account? <router-link to="/register">Create one</router-link></p>
+                </div>
+                <div class="field">
+                    <p class="control">
+                        <button class="button is-success" :class="{'is-loading': authenticating}" type="button" @click="handleLogin">
+                        Login
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -20,11 +54,18 @@ export default {
         }
     },
   computed: {
-      ...mapGetters('auth', [
+    ...mapGetters('auth', [
           'authenticating',
           'authenticationError',
           'authenticationErrorCode'
-      ])
+      ]),
+    emailReady() {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(this.email).toLowerCase());
+    },
+    passwordReady() {
+        return this.password.trim().length > 5
+    }
   },
   methods: {
       ...mapActions('auth', [
@@ -44,29 +85,9 @@ export default {
 }
 </script>
 
-<style scoped>
-.login{ 
-    margin-top: 40px;
+<style lang="scss">
+.card.card-auth {
+    max-width: 400px;
+    margin: 10px auto;
 }
-input {
-    margin: 10px 0;
-    width: 20%;
-    padding: 15px;
-}
-button {
-    margin-top: 20px;
-    width: 10%;
-    cursor: pointer;
-}
-
-p{
-    margin-top: 40px;
-    font-size: 13px;
-}
-
-p a {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 </style>

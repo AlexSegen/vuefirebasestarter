@@ -1,20 +1,66 @@
 <template>
-    <nav>
-        <template  v-if="!loggedIn">
-            <li><router-link to="/login">Login</router-link></li>
-            <li><router-link to="/register">Register</router-link></li>        
-        </template>
-        <template  v-else>
-            <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/profile">Profile</router-link></li>
-        </template>
-        <li><router-link to="/about">About</router-link></li>
+<nav class="navbar is-transparent">
+  <div class="container">
+  <div class="navbar-brand">
+    <router-link class="navbar-item" to="/">
+      <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+    </router-link>
+    <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 
-        <template  v-if="loggedIn">
-            <li><a @click="signOut" href="javascript:void(0);">Logout</a></li>
-        </template>
+  <div id="navbarExampleTransparentExample" class="navbar-menu">
+    <div class="navbar-start">
+      <router-link class="navbar-item" to="/">Home</router-link>
+      <router-link class="navbar-item" to="/about">About</router-link>
 
-    </nav>
+      <template  v-if="loggedIn">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">
+          Account
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <router-link class="navbar-item" to="/profile">
+            Profile
+          </router-link>
+          <hr class="navbar-divider">
+          <a class="navbar-item" href="javascript:void(0);" @click="signOut">
+            Logout
+          </a>
+        </div>
+      </div>
+      </template>
+
+    </div>
+
+  <template  v-if="!loggedIn">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="field is-grouped">
+          <p class="control">
+            <router-link class="bd-tw-button button" to="/login">
+              <span class="icon"><i class="fab fa-twitter"></i></span>
+              <span>
+                Login
+              </span>
+            </router-link>
+          </p>
+          <p class="control">
+            <router-link class="button is-primary" to="/register">
+              <span class="icon"><i class="fas fa-download"></i></span>
+              <span>Register</span>
+            </router-link>
+          </p>
+        </div>
+      </div>
+    </div>
+  </template>
+  </div>    
+  </div>
+</nav>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -30,10 +76,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-nav > li {
-    display: inline-block;
-    margin-right: 10px;
-}
-</style>

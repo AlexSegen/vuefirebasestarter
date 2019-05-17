@@ -1,13 +1,29 @@
 <template>
   <div class="home">
-    <h1>Welcome, {{ user.displayName ? user.displayName : user.email }}</h1>
-    <p>Email: {{ user.email }} - Registered on {{ user.createdAt | formatDate }}</p>
+    <Hero title="Home" subtitle="" />
+
+    <div class="container">
+      <div class="columns"  style="margin-top:50px">
+        <div class="column"></div>
+        <div class="column">
+          <h2>Welcome back, {{user.displayName}}</h2>
+          <p>Last login: {{user.lastLoginAt}}</p>
+        </div>
+        <div class="column"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Hero from '@/components/HeroSection.vue'
+
 export default {
+  name:'Home',
+    components: {
+        Hero
+    },
   computed: {
     ...mapGetters('auth', ['loggedIn', 'user', 'isAdmin'])
   },
