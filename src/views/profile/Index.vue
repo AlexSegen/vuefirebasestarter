@@ -1,7 +1,7 @@
 <template>
     <div class="profile">
        
-        <Hero title="Profile" :subtitle="'Welcome back, ' + profile.displayName" />
+        <Hero title="Profile" subtitle="Update your personal info" />
 
         <div class="container" style="margin-top:50px;">
             <div class="columns">
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-success" type="button" @click="updateProfile">Update</button>
+                                        <button class="button is-success" type="button" @click="updateProfile">Update profile</button>
                                     </p>
                                 </div>
 
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-success" type="button" @click="updatePassword" :disabled="!passwordReady">Update</button>
+                                        <button class="button is-info" type="button" @click="updatePassword" :disabled="!passwordReady">Update password</button>
                                     </p>
                                 </div>
 

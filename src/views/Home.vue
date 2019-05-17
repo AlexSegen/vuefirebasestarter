@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Hero title="Home" subtitle="" />
+    <Hero title="Home" subtitle="Welcome back!" />
 
     <div class="container">
       <div class="columns"  style="margin-top:50px">
