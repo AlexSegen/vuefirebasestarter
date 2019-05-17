@@ -9,31 +9,42 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: 'login',
     data() {
         return {
-            email: '',
-            password: ''
+            email: 'alejandrojv17@gmail.com',
+            password: '123456'
         }
     },
-    methods: {
-        handleLogin() {
-            firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(user => {
-                alert('Login successfull!')
-                console.log(user)
-                this.$router.replace('home');
-            }).catch(e => {
-                console.log('Error: ' + e.message);
-            });
-        }
-    }
+  computed: {
+      ...mapGetters('auth', [
+          'authenticating',
+          'authenticationError',
+          'authenticationErrorCode'
+      ])
+  },
+  methods: {
+      ...mapActions('auth', [
+          'login'
+      ]),
+
+      handleLogin() {
+          if (this.email != '' && this.password != '') {
+            this.login({email: this.email, password: this.password})
+            this.password = ""
+          }
+      },
+      checkNewUser() {
+        return this.$route.query.register == 'success'
+      }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .login{ 
     margin-top: 40px;
 }

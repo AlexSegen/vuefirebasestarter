@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+Vue.use(Router)
 
-import firebase from 'firebase';
+import { TokenService, SetUser } from '@/services/storage.service'
 
 import Login from './views/auth/Login.vue'
 import Register from './views/auth/Register.vue'
@@ -10,7 +11,10 @@ import Profile from './views/profile/Index.vue'
 
 import Home from './views/Home.vue'
 
-Vue.use(Router)
+import E401 from './views/errors/E401.vue'
+import E404 from './views/errors/E404.vue'
+
+
 
 const router = new Router({
   mode: 'history',
@@ -18,37 +22,41 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      name: 'E404',
+      component: E404
     },
     {
-      path: '/',
-      redirect: '/login'
+      path: '/not-authorized',
+      name: 'E401',
+      component: E401
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: {
+        public: true,  // Allow access to even if not logged in
+        onlyWhenLoggedOut: true
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      meta: {
+        public: true,  // Allow access to even if not logged in
+        onlyWhenLoggedOut: true
+      }
     },
     {
-      path: '/home',
+      path: '/',
       name: 'home',
-      component: Home,
-      meta: {
-        requiresAuth: true
-      }
+      component: Home
     },
     {
       path: '/profile',
       name: 'profile',
-      component: Profile,
-      meta: {
-        requiresAuth: true
-      }
+      component: Profile
     },
     {
       path: '/about',
@@ -56,12 +64,15 @@ const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      meta: {
+        public: true
+      }
     }
   ]
 })
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
@@ -69,6 +80,40 @@ router.beforeEach((to, from, next) => {
   else if (!requiresAuth && currentUser) next('login')
   else next()
 
-});
+}); */
+
+
+router.beforeEach((to, from, next) => {
+  const isPublic = to.matched.some(record => record.meta.public)
+  const isAdmin = to.matched.some(record => record.meta.isAdmin)
+  const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
+  const loggedIn = !!TokenService.getToken();
+  const loggedAdmin = SetUser.isAdmin();
+
+  if (!isPublic && !loggedIn) {
+    return next({
+      path:'/login',
+      query: {redirect: to.fullPath}  // Store the full path to redirect the user to after login
+    });
+  }
+
+  // Do not allow user to visit login page or register page if they are logged in
+  if (loggedIn && onlyWhenLoggedOut) {
+    return next('/')
+  }
+
+  if (loggedIn) {
+    if(!loggedAdmin && isAdmin){
+      return next({path:'/not-authorized'});
+    } else if (loggedAdmin && isAdmin){
+      next()
+    } else {
+      next()
+    }
+  }
+
+  next();
+})
+
 
 export default router;

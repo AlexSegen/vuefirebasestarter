@@ -11,6 +11,10 @@ import firebaseConfig from './config/firebase.config'
 Vue.config.productionTip = false
 
 
+
+import 'toastmejs/dist/css/toastme.min.css'
+
+
 let app = '';
 
 firebase.initializeApp(firebaseConfig);

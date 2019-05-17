@@ -1,22 +1,19 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <h1>Welcome</h1>
-    <p>You can now <a href="javascript:void(0);" @click="handleSignOut">Sign Out</a></p>
+    <h1>Welcome, {{ user.displayName ? user.displayName : user.email }}</h1>
+    <p>Email: {{ user.email }} - Registered on {{ user.createdAt | formatDate }}</p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import firebase from 'firebase'
-
+import { mapGetters } from 'vuex'
 export default {
-  name: 'home',
-  methods: {
-    handleSignOut() {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('login');
-      })
+  computed: {
+    ...mapGetters('auth', ['loggedIn', 'user', 'isAdmin'])
+  },
+  filters: {
+    formatDate(val) {
+      return new Date(val).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
     }
   }
 }
