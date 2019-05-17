@@ -29,10 +29,16 @@ const AuthService = {
             TokenService.saveToken(data.user.ra)
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
-
+            
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    return user        
+                }
+            });
+            
             //ApiService.setHeader()
 
-            return data.user
+            return firebase.auth().currentUser
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
         }

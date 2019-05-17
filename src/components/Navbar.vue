@@ -20,7 +20,7 @@
       <template  v-if="loggedIn">
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link" href="javascript:void(0);">
-          Account
+          Hello, {{user.displayName}}
         </a>
         <div class="navbar-dropdown is-boxed">
           <router-link class="navbar-item" to="/profile">

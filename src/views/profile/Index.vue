@@ -20,6 +20,19 @@
                                     <h1>Update profile</h1>
                                 </div>
                                 <div class="field">
+                                    <figure class="image is-128x128" style="margin: 10px auto;">
+                                            <img :src="profile.photoURL" class="is-rounded">
+                                    </figure>
+                                </div>
+                                <div class="field has-text-centered">
+                                    <div class="file is-default is-small">
+                                        <label class="file-label">
+                                        <input class="file-input" type="file" name="resume">
+                                        <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field">
                                 <p class="control has-icons-left has-icons-right">
                                     <input class="input" type="text" placeholder="Display name" v-model="profile.displayName" >
                                     <span class="icon is-small is-left">
