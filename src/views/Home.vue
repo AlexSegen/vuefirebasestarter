@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Hero title="Home" subtitle="Welcome back!" />
+    <Hero title="VueFirebase" subtitle="This is the home page" />
 
     <div class="container">
       <div class="columns"  style="margin-top:50px">
@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import utils from '@/libs/formaters'
 import Hero from '@/components/HeroSection.vue'
 
 export default {
@@ -32,7 +33,7 @@ export default {
   },
   filters: {
     formatDate(val) {
-      return new Date(val).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+      return utils.formatFirebaseDate(val);
     }
   }
 }

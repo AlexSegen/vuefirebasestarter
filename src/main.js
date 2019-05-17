@@ -4,12 +4,10 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
-
 import firebase from 'firebase'
 import firebaseConfig from './config/firebase.config'
 
 Vue.config.productionTip = false
-
 
 //Vendors
 import 'bulma/css/bulma.css'

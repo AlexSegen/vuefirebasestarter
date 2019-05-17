@@ -5,14 +5,14 @@
     <router-link class="navbar-item" to="/">
       <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
-    <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <a role="button" class="navbar-burger" @click="toggleNav"  :class="{'is-active': isActive}" data-target="navMenu" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
   </div>
 
-  <div id="navbarExampleTransparentExample" class="navbar-menu">
+  <div class="navbar-menu" :class="{'is-active': isActive}" id="navMenu">
     <div class="navbar-start">
       <router-link class="navbar-item" to="/">Home</router-link>
       <router-link class="navbar-item" to="/about">About</router-link>
@@ -68,10 +68,18 @@ export default {
   computed: {
     ...mapGetters('auth', ['loggedIn', 'user', 'isAdmin']),
   },
+  data() {
+    return {
+      isActive: false
+    }
+  },
   methods: {
     ...mapActions('auth', ['logout']),
     signOut(){
       this.logout();
+    },
+    toggleNav() {
+      this.isActive = !this.isActive
     }
   }
 }
