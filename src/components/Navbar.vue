@@ -19,7 +19,7 @@
 
       <template  v-if="loggedIn">
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">
+        <a class="navbar-link" href="javascript:void(0);">
           Account
         </a>
         <div class="navbar-dropdown is-boxed">
@@ -28,7 +28,7 @@
           </router-link>
           <hr class="navbar-divider">
           <a class="navbar-item" href="javascript:void(0);" @click="signOut">
-            Logout
+            Logout 
           </a>
         </div>
       </div>
@@ -42,7 +42,7 @@
         <div class="field is-grouped">
           <p class="control">
             <router-link class="bd-tw-button button" to="/login">
-              <span class="icon"><i class="fab fa-twitter"></i></span>
+              <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
               <span>
                 Login
               </span>
@@ -50,7 +50,7 @@
           </p>
           <p class="control">
             <router-link class="button is-primary" to="/register">
-              <span class="icon"><i class="fas fa-download"></i></span>
+              <span class="icon"><i class="fas fa-user-plus"></i></span>
               <span>Register</span>
             </router-link>
           </p>

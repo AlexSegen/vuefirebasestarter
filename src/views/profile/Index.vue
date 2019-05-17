@@ -3,7 +3,7 @@
        
         <Hero title="Profile" :subtitle="'Welcome back, ' + profile.displayName" />
 
-        <div class="container">
+        <div class="container" style="margin-top:50px;">
             <div class="columns">
                 <div class="column"></div>
                 <div class="column">

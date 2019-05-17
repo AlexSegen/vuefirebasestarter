@@ -5,7 +5,10 @@
     <div class="container">
       <div class="columns"  style="margin-top:50px">
         <div class="column"></div>
-        <div class="column">
+        <div class="column has-text-centered">
+          <figure class="image is-128x128" style="margin: 10px auto;">
+                <img :src="user.photoURL" class="is-rounded">
+          </figure>
           <h2>Welcome back, {{user.displayName}}</h2>
           <p>Last login: {{user.lastLoginAt}}</p>
         </div>
