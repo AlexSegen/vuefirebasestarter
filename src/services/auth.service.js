@@ -103,9 +103,6 @@ const AuthService = {
      * @throws AuthenticationError 
      **/
     verifyEmail: function () {
-        return { success: true}
-
-        
         return firebase.auth().currentUser.sendEmailVerification().then(()=>{
             return { success: true}
         }).catch(error => {

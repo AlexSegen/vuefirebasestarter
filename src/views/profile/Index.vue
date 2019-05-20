@@ -13,7 +13,8 @@
                                 <div class="notification is-default"  v-if="!user.emailVerified">
                                     <strong>Important:</strong><br>
                                     <p>In order to verify your identity, you need to confirm your email.</p>
-                                    <p><button class="button is-warning" type="button" @click="emailVerification">Send verification email</button></p>
+                                    <br>
+                                    <p><button class="button is-warning" :class="{'is-loading': loading}" type="button" @click="emailVerification">Send verification email</button></p>
                                 </div>
 
                                 <div class="field">
