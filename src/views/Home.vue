@@ -10,7 +10,7 @@
                 <img :src="user.photoURL" class="is-rounded">
           </figure>
           <h2>Welcome back, {{user.displayName}}</h2>
-          <p>Last login: {{user.lastLoginAt | formatDate}}</p>
+          <p><strong>Last login:</strong> {{user.lastLoginAt | formatDate}}</p>
           <p v-if="user.emailVerified"><span class="tag is-success">Verified user</span></p>
         </div>
         <div class="column"></div>

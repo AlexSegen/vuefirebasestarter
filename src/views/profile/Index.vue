@@ -38,7 +38,7 @@
                                     <span class="icon is-small is-left">
                                     <i class="fas fa-user"></i>
                                     </span>
-                                    <span class="icon is-small is-right has-text-success">
+                                    <span class="icon is-small is-right has-text-success" v-if="displayNameReady">
                                         <i class="fas fa-check"></i>
                                     </span>
                                 </p>
@@ -64,7 +64,7 @@
                                 </div> -->
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-success" :class="{ 'is-loading': uploading }" type="button" @click="updateProfile">Update profile</button>
+                                        <button class="button is-success" :class="{ 'is-loading': uploading || loading }" type="button" @click="updateProfile">Update profile</button>
                                     </p>
                                 </div>
 
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-info" type="button" @click="updatePassword" :disabled="!passwordReady">Update password</button>
+                                        <button class="button is-info" type="button" @click="updatePassword" :disabled="!passwordReady || loading">Update password</button>
                                     </p>
                                 </div>
 
@@ -145,9 +145,12 @@ export default {
             'loading',
             'requestError',
             'requestErrorCode']),
-    passwordReady() {
-        return this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
-    }
+        passwordReady() {
+            return this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
+        },
+        displayNameReady(){
+            return this.profile.displayName.toString().trim().length > 1;
+        }
     },
     created() {
         this.profile = this.user;
@@ -155,6 +158,8 @@ export default {
     methods: {
         ...mapActions('auth', ['updateUser', 'verifyEmail']),
         updateProfile() {
+            if(!this.displayNameReady) return notification.error("Display name can't be empty")
+            
             this.updateUser(this.profile);
         },
         emailVerification() {
