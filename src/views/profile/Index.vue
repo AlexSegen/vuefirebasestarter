@@ -27,7 +27,7 @@
                                 <div class="field has-text-centered">
                                     <div class="file is-default is-small">
                                         <label class="file-label">
-                                        <input class="file-input" type="file" name="resume" @change="onFileChanged">
+                                        <input class="file-input" type="file" name="resume" @change="onFileChanged" :disabled="uploading">
                                         <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
                                         </label>
                                     </div>
@@ -44,6 +44,14 @@
                                 </p>
                                 </div>
                                 <div class="field">
+                                    <p class="control has-icons-left has-icons-right">
+                                        <input class="input is-static" type="text" placeholder="Email" v-model="profile.email" readonly>
+                                        <span class="icon is-small is-left">
+                                        <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </p>
+                                </div>
+<!--                                 <div class="field">
                                 <p class="control has-icons-left has-icons-right">
                                     <input class="input" type="text" placeholder="Photo URL" v-model="profile.photoURL">
                                     <span class="icon is-small is-left">
@@ -53,10 +61,10 @@
                                         <i class="fas fa-check"></i>
                                     </span>
                                 </p>
-                                </div>
+                                </div> -->
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-success" type="button" @click="updateProfile">Update profile</button>
+                                        <button class="button is-success" :class="{ 'is-loading': uploading }" type="button" @click="updateProfile">Update profile</button>
                                     </p>
                                 </div>
 
@@ -108,9 +116,9 @@
 <script>
 
 import firebase from 'firebase';
-
+/* 
 const storageService = firebase.storage();
-const storageRef = storageService.ref();
+const storageRef = storageService.ref(); */
 
 import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
@@ -124,10 +132,11 @@ export default {
     },
     data() {
         return {
-            profile: '',
+            profile: {},
             newPassword: '',
             confirmPassword: '',
-            selectedFile: null
+            selectedFile: null,
+            uploading: false
         }
     },
     computed: {
@@ -170,17 +179,29 @@ export default {
             this.onUpload()
         },
         onUpload() {
-            const uploadTask = storageRef.child(`images/${this.selectedFile.name}`).put(this.selectedFile); //create a child directory called images, and place the file inside this directory
+            var _this = this;
+            _this.uploading = true;
+            const uploadTask = firebase.storage().ref().child(`images/${this.selectedFile.name}`).put(this.selectedFile); //create a child directory called images, and place the file inside this directory
             uploadTask.on('state_changed', (snapshot) => {
-                console.log(snapshot);
+            //console.log(snapshot);
             // Observe state change events such as progress, pause, and resume
             }, (error) => {
                 // Handle unsuccessful uploads
+                _this.uploading = false;
+                notification.error(error.message + '. Se console for more details');
                 console.log(error);
             }, () => {
                 // Do something once upload is complete
-                console.log('success');
+                //console.log('success');
+                notification.success('File uploaded');
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    _this.profile.photoURL = downloadURL;
+                    _this.updateProfile();
+                    notification.success('Profile updated!');
+                    _this.uploading = false;
+                });
             });
+            
         }
     },
 }
