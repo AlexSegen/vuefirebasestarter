@@ -24,8 +24,6 @@ import { mapGetters } from 'vuex'
 import utils from '@/libs/formaters'
 import Hero from '@/components/HeroSection.vue'
 
-import firebase from 'firebase'
-
 export default {
   name:'Home',
     components: {
