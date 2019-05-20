@@ -10,18 +10,19 @@
                         <div class="">
                             <div class="card-content ">
 
-                                <div class="notification is-info"  v-if="!user.emailVerified">
+                                <div class="notification is-default"  v-if="!user.emailVerified">
                                     <strong>Important:</strong><br>
-                                    <p>We need to verify your identity. </p><br>
-                                    <p><button class="button is-default" type="button" @click="emailVerification">Confirm email</button></p>
+                                    <p>In order to verify your identity, you need to confirm your email.</p>
+                                    <p><button class="button is-warning" type="button" @click="emailVerification">Send verification email</button></p>
                                 </div>
 
                                 <div class="field">
                                     <h1>Update profile</h1>
                                 </div>
-                                <div class="field">
+                                <div class="field" >
                                     <figure class="image is-128x128" style="margin: 10px auto;">
-                                            <img :src="profile.photoURL" class="is-rounded">
+                                            <img v-if="profile.photoURL" :src="profile.photoURL" class="is-rounded">
+                                            <img v-else src="http://placehold.it/128x128" class="is-rounded">
                                     </figure>
                                 </div>
                                 <div class="field has-text-centered">
@@ -116,9 +117,6 @@
 <script>
 
 import firebase from 'firebase';
-/* 
-const storageService = firebase.storage();
-const storageRef = storageService.ref(); */
 
 import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
@@ -149,7 +147,9 @@ export default {
             return this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
         },
         displayNameReady(){
-            return this.profile.displayName.toString().trim().length > 1;
+            if(this.profile.displayName) return this.profile.displayName.toString().trim().length > 1;
+            return false
+            
         }
     },
     created() {
@@ -188,16 +188,11 @@ export default {
             _this.uploading = true;
             const uploadTask = firebase.storage().ref().child(`images/${this.selectedFile.name}`).put(this.selectedFile); //create a child directory called images, and place the file inside this directory
             uploadTask.on('state_changed', (snapshot) => {
-            //console.log(snapshot);
-            // Observe state change events such as progress, pause, and resume
             }, (error) => {
-                // Handle unsuccessful uploads
                 _this.uploading = false;
                 notification.error(error.message + '. Se console for more details');
                 console.log(error);
             }, () => {
-                // Do something once upload is complete
-                //console.log('success');
                 notification.success('File uploaded');
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                     _this.profile.photoURL = downloadURL;

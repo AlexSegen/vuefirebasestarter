@@ -79,16 +79,20 @@ const actions = {
         }
     },
 
-    async register({ commit }, payload) {
+    async register({ commit },  {email, password}) {
         commit('registerRequest');
 
         try {
-            const data = await AuthService.register(payload);
+            const data = await AuthService.register(email, password);
             
-            commit('registerSuccess', data)
+            commit('registerSuccess', data);
+
+            alert.info('You are connected!');
+
+            router.push('/login?register=success');
 
             // Redirect the user to the login page
-            router.push('/login?register=success');
+            //router.push('/login?register=success');
 
             return true
         } catch (e) {
@@ -126,26 +130,21 @@ const actions = {
 
     async verifyEmail({ commit }) {
 
-        commit('updateRequest');
+        commit('emailVerification', false);
         
         try {
 
             const data = await AuthService.verifyEmail();
 
-            console.log(data)
-
-            if(data) {
-                let user = SetUser.getUser();
-                user.emailVerified = true              
-                SetUser.saveUser(user);
-                commit('updateSuccess', data)
-
-                alert.success('Email has been verified!');
-
-                return true
+            if(data.success) {
+                alert.success('Verification email has been send!');
+                commit('emailVerification', false);
+                return { success: true}
             }
 
+            commit('emailVerification', false);
             alert.error('There was a problem verifying your Email');
+            return false
             
         } catch (e) {
             if (e instanceof AuthenticationError) {
@@ -153,6 +152,7 @@ const actions = {
             }
 
             alert.error(e.message)
+            commit('emailVerification', false);
 
             return false
         }
@@ -190,7 +190,9 @@ const mutations = {
         state.authenticationErrorCode = 0
     },
 
-    registerSuccess(state) {
+    registerSuccess(state, user) {
+        state.accessToken = user.ra
+        state.user = user
         state.authenticating = false;
     },
 
@@ -213,10 +215,8 @@ const mutations = {
         state.requestError = errorMessage
     },
     emailVerification(state, data) {
-        state.user.verifyEmail = data
-        state.loading = false
+        state.loading = data
     },
-
     logoutSuccess(state) {
         state.accessToken = ''
         state.user = null

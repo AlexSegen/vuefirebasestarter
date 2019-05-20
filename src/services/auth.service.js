@@ -49,17 +49,23 @@ const AuthService = {
      * 
      * @throws AuthenticationError 
      **/
-    register: async function (payload) {
-        const requestData = {
-            method: 'post',
-            url: "/auth/register/",
-            data: payload
-        }
+    register: async function (email, password) {
 
         try {
-            const response = await ApiService.customRequest(requestData)
+            const data = await firebase.auth().createUserWithEmailAndPassword(email, password)
 
-            return response.data
+            TokenService.saveToken(data.user.ra)
+            TokenService.saveRefreshToken(data.user.refreshToken)
+            SetUser.saveUser(data.user);
+            
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    return user        
+                }
+            });
+            
+            return firebase.auth().currentUser
+
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
         }
@@ -97,12 +103,11 @@ const AuthService = {
      * @throws AuthenticationError 
      **/
     verifyEmail: function () {
+        return { success: true}
+
+        
         return firebase.auth().currentUser.sendEmailVerification().then(()=>{
-            let user = SetUser.getUser();
-            user.emailVerified = true
-            SetUser.saveUser(user);
-            return true
-            
+            return { success: true}
         }).catch(error => {
             throw new AuthenticationError(error.code, error.message)
         })

@@ -11,16 +11,19 @@
                     <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                     </span>
-                    <span class="icon is-small is-right">
+                    <span class="icon is-small is-right has-text-success" v-if="emailReady">
                     <i class="fas fa-check"></i>
                     </span>
                 </p>
                 </div>
                 <div class="field">
-                <p class="control has-icons-left">
+                <p class="control has-icons-left has-icons-right">
                     <input class="input" type="password" placeholder="Password" v-model="password" :disabled="authenticating">
                     <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
+                    </span>
+                    <span class="icon is-small is-right has-text-success" v-if="passwordReady">
+                        <i class="fas fa-check"></i>
                     </span>
                 </p>
                 </div>
@@ -38,25 +41,39 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: 'register',
     data() {
         return {
             email: '',
-            password: '',
-            authenticating: ''
+            password: ''
+        }
+    },
+    computed: {
+        ...mapGetters('auth', [
+            'authenticating',
+            'authenticationError',
+            'authenticationErrorCode'
+        ]),
+        emailReady() {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(this.email).toLowerCase());
+        },
+        passwordReady() {
+            return this.password.trim().length > 5
         }
     },
     methods: {
+      ...mapActions('auth', [
+          'register'
+      ]),
         handleRegister() {
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(user => {
-                alert('Account created!')
-                console.log(user)
-            }).catch(e => {
-                console.log('Error: ' + e.message);
-            });
+          if (this.emailReady && this.passwordReady) {
+            this.register({email: this.email, password: this.password})
+            this.password = ""
+          }
         }
     }
 }
