@@ -10,7 +10,7 @@
                 <img :src="user.photoURL" class="is-rounded">
           </figure>
           <h2>Welcome back, {{user.displayName}}</h2>
-          <p>Last login: {{user.lastLoginAt}}</p>
+          <p>Last login: {{user.lastLoginAt | formatDate}}</p>
           <p v-if="user.emailVerified"><span class="tag is-success">Verified user</span></p>
         </div>
         <div class="column"></div>
@@ -24,6 +24,8 @@ import { mapGetters } from 'vuex'
 import utils from '@/libs/formaters'
 import Hero from '@/components/HeroSection.vue'
 
+import firebase from 'firebase'
+
 export default {
   name:'Home',
     components: {
@@ -34,7 +36,7 @@ export default {
   },
   filters: {
     formatDate(val) {
-      return utils.formatFirebaseDate(val);
+      return utils.formatFirebaseDateAndTime(val);
     }
   }
 }
