@@ -1,6 +1,6 @@
 <template>
     <div class="login container">
-        <div class="card card-auth">
+        <div class="card-auth">
             <div class="card-content ">
                 <div class="field">
                     <h1>Sign In</h1>
@@ -49,8 +49,8 @@ export default {
     name: 'login',
     data() {
         return {
-            email: 'alejandrojv17@gmail.com',
-            password: '123456'
+            email: '',
+            password: ''
         }
     },
   computed: {
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style lang="scss">
-.card.card-auth {
+.card-auth {
     max-width: 400px;
     margin: 10px auto;
 }

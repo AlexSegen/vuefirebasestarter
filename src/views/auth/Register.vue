@@ -1,6 +1,6 @@
 <template>
     <div class="sign-up container">
-        <div class="card card-auth">
+        <div class="card-auth">
             <div class="card-content ">
                 <div class="field">
                     <p>Let's create a new account!</p>
