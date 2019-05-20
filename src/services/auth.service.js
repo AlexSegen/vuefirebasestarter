@@ -72,6 +72,41 @@ const AuthService = {
     },
 
     /**
+     * Reauthenticate the user and store the access token to TokenService. 
+     * 
+     * @returns access_token
+     * @throws AuthenticationError 
+     **/
+    reauthenticate: async function (password) {
+
+        try {
+            
+            const currentUser = firebase.auth().currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(
+                currentUser.email, 
+                password
+            );
+    
+            const data = await currentUser.reauthenticateWithCredential(credential)
+
+            TokenService.saveToken(data.user.ra)
+            TokenService.saveRefreshToken(data.user.refreshToken)
+            SetUser.saveUser(data.user);
+            
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    return user        
+                }
+            });
+
+            return currentUser
+
+        } catch (error) {
+            throw new AuthenticationError(error.code, error.message)
+        }
+    },
+
+    /**
      * Updates the user and stores to SetUser. 
      * 
      * @returns user
@@ -81,15 +116,14 @@ const AuthService = {
 
         try {
             
-            return firebase.auth().currentUser.updateProfile(payload).then(()=>{
+            firebase.auth().currentUser.updateProfile(payload);
 
-                SetUser.removeUser();
+            SetUser.removeUser();
+        
+            SetUser.saveUser(payload);
+
+            return payload
             
-                SetUser.saveUser(payload);
-
-                return payload
-                
-            })
             
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
