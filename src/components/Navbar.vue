@@ -18,10 +18,16 @@
       <router-link class="navbar-item" to="/about">About</router-link>
 
       <template  v-if="loggedIn">
-      <div class="navbar-item has-dropdown is-hoverable">
-        <router-link class="navbar-item" to="/products">Products</router-link>
+      <router-link class="navbar-item" to="/products">Products</router-link>
+      </template>
+
+    </div>
+
+
+    <div class="navbar-end">
+      <div  v-if="loggedIn" class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link" href="javascript:void(0);">
-          Hello, {{user.displayName}}
+          <img :src="user.photoURL ? user.photoURL : 'http://placehold.it/24x24'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> Hello, {{user.displayName}}
         </a>
         <div class="navbar-dropdown is-boxed">
           <router-link class="navbar-item" to="/profile">
@@ -33,13 +39,8 @@
           </a>
         </div>
       </div>
-      </template>
 
-    </div>
-
-  <template  v-if="!loggedIn">
-    <div class="navbar-end">
-      <div class="navbar-item">
+      <div v-else class="navbar-item">
         <div class="field is-grouped">
           <p class="control">
             <router-link class="bd-tw-button button" to="/login">
@@ -58,7 +59,7 @@
         </div>
       </div>
     </div>
-  </template>
+
   </div>    
   </div>
 </nav>
