@@ -19,6 +19,7 @@
 
       <template  v-if="loggedIn">
       <div class="navbar-item has-dropdown is-hoverable">
+        <router-link class="navbar-item" to="/products">Products</router-link>
         <a class="navbar-link" href="javascript:void(0);">
           Hello, {{user.displayName}}
         </a>

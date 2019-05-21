@@ -42,7 +42,7 @@
                           <td>{{item.name}}</td>
                           <td>$ {{item.price}}</td>
                           <td>
-                              <button class="button is-default" type="button">Edit</button>
+                              <router-link :to="{ name: 'productDetails', params: {id: item['.key']} }" class="button is-default" type="button">Edit</router-link>
                               <button class="button is-default" type="button" @click="deleteItem(item['.key'])"><i class="fas fa-trash"></i></button>
                           </td>
                       </tr>

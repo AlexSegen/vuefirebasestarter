@@ -12,6 +12,7 @@ import Profile from './views/profile/Index.vue'
 import Home from './views/Home.vue'
 
 import Products from './views/products/Index.vue'
+import ProductDetails from './views/products/_Id.vue'
 
 import E401 from './views/errors/E401.vue'
 import E404 from './views/errors/E404.vue'
@@ -59,6 +60,11 @@ const router = new Router({
       path: '/products',
       name: 'products',
       component: Products
+    },
+    {
+      path: '/products/:id',
+      name: 'productDetails',
+      component: ProductDetails
     },
     {
       path: '/profile',
