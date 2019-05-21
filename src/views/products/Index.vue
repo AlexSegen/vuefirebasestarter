@@ -57,6 +57,7 @@
 </template>
 <script>
 import Hero from '@/components/HeroSection.vue'
+import notification from '@/libs/notifications'
 import {database} from '@/config/firebase.config'
 
 export default {
@@ -66,6 +67,7 @@ export default {
     },
     data() {
         return {
+            loading: false,
             newItem: {
                 name: '',
                 price: ''
@@ -77,15 +79,31 @@ export default {
     },
     methods: {
         addItem() {
-        this.$firebaseRefs.products.push({
-            name: this.newItem.name,
-            price: this.newItem.price
-        })
-        this.newItem.name = '';
-        this.newItem.price = '';
+            this.loading = true;
+            try {
+                this.$firebaseRefs.products.push({
+                    name: this.newItem.name,
+                    price: this.newItem.price
+                })
+                this.newItem.name = '';
+                this.newItem.price = '';
+                notification.success('Product added!');
+                this.loading = false;
+            } catch (error) {
+                notification.error(e.message);
+                this.loading = false;
+            }
         },
         deleteItem(key) {
-            this.$firebaseRefs.products.child(key).remove();
+            this.loading = true;
+            try {
+                 this.$firebaseRefs.products.child(key).remove();
+                 notification.warning('Product deleted!');
+                 this.loading = false;
+            } catch (error) {
+                notification.error(e.message);
+                this.loading = false;
+            }
         }
     }
 }

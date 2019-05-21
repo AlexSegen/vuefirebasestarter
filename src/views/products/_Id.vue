@@ -11,17 +11,18 @@
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Product name" v-model="newItem.name">
+                                <input class="input" type="text" placeholder="Product name" v-model="newItem.name" :disabled="loading">
                             </div>
                         </div>
                         <div class="field">
                             <label class="label">Price</label>
                             <div class="control">
-                                <input class="input" type="number" placeholder="Product price" v-model="newItem.price">
+                                <input class="input" type="number" placeholder="Product price" v-model="newItem.price" :disabled="loading">
                             </div>
                         </div>
                         <div class="field">
-                            <button type="button" @click="updateItem" class="button is-primary">Save product</button>
+                            <router-link to="/products" class="button is-default"><i class="fas fa-chevron-left"></i> Go back</router-link>
+                            <button type="button" @click="updateItem" class="button is-primary" :class="{'is-loading': loading}">Save product</button>
                         </div>
                   </div>
               </div>
@@ -31,9 +32,11 @@
   </div>
 </template>
 <script>
+import notification from '@/libs/notifications'
 import {database} from '@/config/firebase.config'
 
 import Hero from '@/components/HeroSection.vue'
+
 export default {
     name: 'EditProduct',
     components: {
@@ -41,8 +44,8 @@ export default {
     },
     data() {
         return {
-            newItem: {
-            }
+            loading: false,
+            newItem: {}
         }
     },
     created() {
@@ -61,8 +64,16 @@ export default {
     },
     methods: {
         updateItem() {
-            this.$firebaseRefs.products.child(this.$route.params.id).set(this.newItem);
-            this.$router.push('/products')
+            this.loading = true;
+            try {
+                this.$firebaseRefs.products.child(this.$route.params.id).set(this.newItem);
+                notification.info('Product updated!')
+                this.loading = false;
+            } catch (error) {
+                notification.error(e.message)
+                this.loading = false;
+            }
+            
         }
     }
 }
