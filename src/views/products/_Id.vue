@@ -1,7 +1,7 @@
 
 <template>
   <div class="products">
-    <Hero title="Products" subtitle="Firebase CRUD example"/>
+<!--     <Hero title="Products" subtitle="Firebase CRUD example"/>
     <div class="container" style="margin-top:50px;">
       <div class="columns">
           <div class="column">
@@ -27,11 +27,11 @@
               </div>
           </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
-import firebaseApp from '@/config/firebase.config'
+/* import firebaseApp from '@/config/firebase.config'
 
 import Hero from '@/components/HeroSection.vue'
 export default {
@@ -65,5 +65,5 @@ export default {
             this.$router.push('/products')
         }
     }
-}
+} */
 </script>

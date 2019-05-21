@@ -1,6 +1,6 @@
-const firebase = require('firebase');
+import * as firebase from 'firebase';
 
-const firebaseConfig = {
+const config = {
     apiKey: process.env.VUE_APP_apiKey,
     authDomain: process.env.VUE_APP_authDomain,
     databaseURL: process.env.VUE_APP_databaseURL,
@@ -10,6 +10,18 @@ const firebaseConfig = {
     appId: process.env.VUE_APP_appId,
 }
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+//const firebaseApp = firebase.initializeApp(config);
 
-module.exports = firebaseApp 
+if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+}
+
+const auth = firebase.auth();
+const database = firebase.database();
+
+export {
+    auth,
+    database,
+};
+
+//module.exports = firebaseApp 

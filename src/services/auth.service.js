@@ -1,9 +1,5 @@
-import firebase from 'firebase'
-import {
-    TokenService,
-    SetUser
-} from './storage.service'
-
+import { auth } from '@/config/firebase.config'
+import { TokenService, SetUser } from './storage.service'
 
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
@@ -24,13 +20,13 @@ const AuthService = {
     login: async function (email, password) {
 
         try {
-            const data = await firebase.auth().signInWithEmailAndPassword(email, password)
+            const data = await auth.signInWithEmailAndPassword(email, password)
 
             TokenService.saveToken(data.user.ra)
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
             
-            firebase.auth().onAuthStateChanged(function(user) {
+            auth.onAuthStateChanged(function(user) {
                 if (user) {
                     return user        
                 }
@@ -38,7 +34,7 @@ const AuthService = {
             
             //ApiService.setHeader()
 
-            return firebase.auth().currentUser
+            return auth.currentUser
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
         }
@@ -52,19 +48,19 @@ const AuthService = {
     register: async function (email, password) {
 
         try {
-            const data = await firebase.auth().createUserWithEmailAndPassword(email, password)
+            const data = await auth.createUserWithEmailAndPassword(email, password)
 
             TokenService.saveToken(data.user.ra)
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
             
-            firebase.auth().onAuthStateChanged(function(user) {
+            auth.onAuthStateChanged(function(user) {
                 if (user) {
                     return user        
                 }
             });
             
-            return firebase.auth().currentUser
+            return auth.currentUser
 
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
@@ -81,8 +77,8 @@ const AuthService = {
 
         try {
             
-            const currentUser = firebase.auth().currentUser;
-            const credential = firebase.auth.EmailAuthProvider.credential(
+            const currentUser = auth.currentUser;
+            const credential = auth.EmailAuthProvider.credential(
                 currentUser.email, 
                 password
             );
@@ -93,7 +89,7 @@ const AuthService = {
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
             
-            firebase.auth().onAuthStateChanged(function(user) {
+            auth.onAuthStateChanged(function(user) {
                 if (user) {
                     return user        
                 }
@@ -116,7 +112,7 @@ const AuthService = {
 
         try {
             
-            firebase.auth().currentUser.updateProfile(payload);
+            auth.currentUser.updateProfile(payload);
 
             SetUser.removeUser();
         
@@ -137,7 +133,7 @@ const AuthService = {
      * @throws AuthenticationError 
      **/
     verifyEmail: function () {
-        return firebase.auth().currentUser.sendEmailVerification().then(()=>{
+        return auth.currentUser.sendEmailVerification().then(()=>{
             return { success: true}
         }).catch(error => {
             throw new AuthenticationError(error.code, error.message)
@@ -151,7 +147,7 @@ const AuthService = {
      * @throws AuthenticationError 
      **/
     updatePassword: function (newPassword) {
-        return firebase.auth().currentUser.updatePassword(newPassword).then(()=>{
+        return auth.currentUser.updatePassword(newPassword).then(()=>{
             return true
         }).catch(error => {
             throw new AuthenticationError(error.code, error.message)
@@ -256,7 +252,7 @@ const AuthService = {
 
         SetUser.removeUser();
 
-        firebase.auth().signOut()
+        auth.signOut()
 
     }
 }

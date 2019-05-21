@@ -7,7 +7,7 @@ import './registerServiceWorker'
 import VueFire from 'vuefire'
 Vue.use(VueFire)
 
-import firebaseApp from './config/firebase.config'
+import {auth} from './config/firebase.config'
 
 Vue.config.productionTip = false
 
@@ -18,7 +18,7 @@ import 'toastmejs/dist/css/toastme.min.css'
 
 //Firebase and Vue Instance
 let app = '';
-firebaseApp.auth().onAuthStateChanged(() => {
+  auth.onAuthStateChanged(() => {
   if(!app) {
     app = new Vue({
       router,

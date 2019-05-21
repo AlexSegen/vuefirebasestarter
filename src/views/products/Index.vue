@@ -56,9 +56,10 @@
   </div>
 </template>
 <script>
-import firebaseApp from '@/config/firebase.config'
+import FirebaseService from '@/services/firebase.service'
 
 import Hero from '@/components/HeroSection.vue'
+
 export default {
     name: 'Products',
     components: {
@@ -69,21 +70,28 @@ export default {
             newItem: {
                 name: '',
                 price: ''
-            }
+            },
+            products: []
         }
     },
-    firebase: {
-        products: firebaseApp.database().ref('products')
+    created() {
+        this.getAll()
     },
+/*     firebase: {
+        products: FirebaseService.getRecords()
+    }, */
     methods: {
+        getAll() {
+            FirebaseService.getRecords().then(data => {
+                console.log(data)
+                this.products = data
+            })
+        },
         addItem() {
-            this.$firebaseRefs.products.push({
-                name: this.newItem.name,
-                price: this.newItem.price
-            });
-            
-            this.newItem.name = '';
-            this.newItem.price = '';
+            FirebaseService.createRecord(this.newItem).then(() => {
+                this.newItem.name = '';
+                this.newItem.price = '';
+            })
             //this.$router.push('/index')
         },
         deleteItem(key) {
