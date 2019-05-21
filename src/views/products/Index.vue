@@ -5,6 +5,7 @@
       <div class="columns">
           <div class="column">
               <h2>Add new product</h2>
+              <hr>
               <div class="card form">
                   <div class="card-content">
                         <div class="field">
@@ -27,6 +28,7 @@
           </div>
           <div class="column is-four-fifths">
               <h2>Product list</h2>
+              <hr>
               <table class="table is-hoverable is-fullwidth">
                   <thead>
                       <tr>
@@ -43,7 +45,7 @@
                           <td>$ {{item.price}}</td>
                           <td>
                               <router-link :to="{ name: 'productDetails', params: {id: item['.key']} }" class="button is-default" type="button">Edit</router-link>
-                              <button class="button is-default" type="button" @click="deleteItem(item['.key'])"><i class="fas fa-trash"></i></button>
+                              <button class="button is-default" type="button" @click="deleteItem(item['.key'])"><i class="fas fa-trash has-text-danger"></i></button>
                           </td>
                       </tr>
                   </tbody>
