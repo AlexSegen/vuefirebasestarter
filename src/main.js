@@ -4,8 +4,10 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 
-import firebase from 'firebase'
-import firebaseConfig from './config/firebase.config'
+import VueFire from 'vuefire'
+Vue.use(VueFire)
+
+import firebaseApp from './config/firebase.config'
 
 Vue.config.productionTip = false
 
@@ -14,11 +16,9 @@ import 'bulma/css/bulma.css'
 import 'toastmejs/dist/css/toastme.min.css'
 
 
-
-//Firebase Config and Vue Instance
+//Firebase and Vue Instance
 let app = '';
-firebase.initializeApp(firebaseConfig);
-firebase.auth().onAuthStateChanged(() => {
+firebaseApp.auth().onAuthStateChanged(() => {
   if(!app) {
     app = new Vue({
       router,
