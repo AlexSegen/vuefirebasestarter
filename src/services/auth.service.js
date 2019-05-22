@@ -1,4 +1,4 @@
-import { auth } from '@/config/firebase.config'
+import { auth, firebase } from '@/config/firebase.config'
 import { TokenService, SetUser } from './storage.service'
 
 class AuthenticationError extends Error {
@@ -78,7 +78,7 @@ const AuthService = {
         try {
             
             const currentUser = auth.currentUser;
-            const credential = auth.EmailAuthProvider.credential(
+            const credential = firebase.auth.EmailAuthProvider.credential(
                 currentUser.email, 
                 password
             );
@@ -146,97 +146,44 @@ const AuthService = {
      * @returns message
      * @throws AuthenticationError 
      **/
-    updatePassword: function (newPassword) {
-        return auth.currentUser.updatePassword(newPassword).then(()=>{
-            return true
-        }).catch(error => {
-            throw new AuthenticationError(error.code, error.message)
-        })
-    },
+    updatePassword: async function (oldPassword, newPassword) {
 
-
-    /**
-     * Upload image. 
-     * 
-     * @returns image url
-     * @throws AuthenticationError 
-     **/
-    updateAvatar: async function (image, userId) {
-        const requestData = {
-            method: 'post',
-            url: "/upload/update-avatar/" + userId,
-            data: image
-        }
+        if(!oldPassword) throw ('Old password is required!');
 
         try {
-            const response = await ApiService.customRequest(requestData)
-
-            SetUser.removeUser();
-            SetUser.saveUser(response.data.data);
             
-            return response.data.data
+            let data = await this.reauthenticate(oldPassword);
+
+            if(data){
+
+                try {
+                    auth.currentUser.updatePassword(newPassword);
+                    return true
+                } catch (error) {
+                    throw new AuthenticationError(error.code, error.message)
+                }
+ 
+            }
 
         } catch (error) {
-            throw new AuthenticationError(error.response.status, error.response.data.message)
+            
+            throw new AuthenticationError(error.code, error.message)
+        
         }
+
     },
-
-
-    /**
+     /**
      * Recover the user password. Send new password to provided email
      * 
      * @returns message
      * @throws AuthenticationError 
      **/
     recoverPassword: async function (payload) {
-        const requestData = {
-            method: 'post',
-            url: "/auth/reset-password/",
-            data: {
-                email: payload
-            }
-        }
-
         try {
-            const response = await ApiService.customRequest(requestData)
-            return response.data
+            
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.message)
         }
-    },
-
-    /**
-     * Refresh the access token.
-     **/
-    refreshToken: async function () {
-        const refreshToken = TokenService.getRefreshToken()
-
-        const requestData = {
-            method: 'post',
-            url: "/o/token/",
-            data: {
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken
-            },
-            auth: {
-                username: process.env.VUE_APP_CLIENT_ID,
-                password: process.env.VUE_APP_CLIENT_SECRET
-            }
-        }
-
-        try {
-            const response = await ApiService.customRequest(requestData)
-
-            TokenService.saveToken(response.data.access_token)
-            TokenService.saveRefreshToken(response.data.refresh_token)
-            // Update the header in ApiService
-            ApiService.setHeader()
-
-            return response.data.access_token
-        } catch (error) {
-            throw new AuthenticationError(error.response.status, error.response.data.detail)
-        }
-
     },
 
     /**

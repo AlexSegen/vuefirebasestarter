@@ -30,9 +30,8 @@
           <img :src="user.photoURL ? user.photoURL : 'http://placehold.it/24x24'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> Hello, {{user.displayName}}
         </a>
         <div class="navbar-dropdown is-boxed">
-          <router-link class="navbar-item" to="/profile">
-            Profile
-          </router-link>
+          <router-link class="navbar-item" to="/profile">Update Profile</router-link>
+          <router-link class="navbar-item" to="/update-password">Update password</router-link>
           <hr class="navbar-divider">
           <a class="navbar-item" href="javascript:void(0);" @click="signOut">
             Logout 

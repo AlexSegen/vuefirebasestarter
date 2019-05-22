@@ -22,17 +22,25 @@
                                 </div>
                                 <div class="field" >
                                     <figure class="image is-128x128" style="margin: 10px auto;">
-                                            <img v-if="profile.photoURL" :src="profile.photoURL" class="is-rounded">
-                                            <img v-else src="http://placehold.it/128x128" class="is-rounded">
+                                        <img v-if="profile.photoURL" :src="profile.photoURL" class="is-rounded">
+                                        <img v-else src="http://placehold.it/128x128" class="is-rounded">
                                     </figure>
                                 </div>
-                                <div class="field has-text-centered">
+                                <div class="field">
                                     <div class="file is-default is-small">
                                         <label class="file-label">
                                         <input class="file-input" type="file" name="resume" @change="onFileChanged" :disabled="uploading">
                                         <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
                                         </label>
                                     </div>
+                                </div>
+                                <div class="field">
+                                    <p class="control has-icons-left has-icons-right">
+                                        <input class="input is-static text-white" type="text" placeholder="Email" v-model="profile.email" readonly>
+                                        <span class="icon is-small is-left">
+                                        <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </p>
                                 </div>
                                 <div class="field">
                                 <p class="control has-icons-left has-icons-right">
@@ -46,65 +54,10 @@
                                 </p>
                                 </div>
                                 <div class="field">
-                                    <p class="control has-icons-left has-icons-right">
-                                        <input class="input is-static text-white" type="text" placeholder="Email" v-model="profile.email" readonly>
-                                        <span class="icon is-small is-left">
-                                        <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </p>
-                                </div>
-<!--                                 <div class="field">
-                                <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="text" placeholder="Photo URL" v-model="profile.photoURL">
-                                    <span class="icon is-small is-left">
-                                    <i class="fas fa-camera"></i>
-                                    </span>
-                                    <span class="icon is-small is-right has-text-success">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </p>
-                                </div> -->
-                                <div class="field">
                                     <p class="control">
                                         <button class="button is-success" :class="{ 'is-loading': uploading || loading }" type="button" @click="updateProfile">Update profile</button>
                                     </p>
                                 </div>
-
-                                <hr>
-                                
-                                <div class="field">
-                                    <h1>Update password</h1>
-                                </div>
-
-                                <div class="field">
-                                <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="password" placeholder="New password" v-model="newPassword">
-                                    <span class="icon is-small is-left">
-                                    <i class="fas fa-lock"></i>
-                                    </span>
-                                    <span class="icon is-small is-right has-text-success" v-if="passwordReady">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </p>
-                                </div>
-
-                                <div class="field">
-                                <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="password" placeholder="Confirm password" v-model="confirmPassword">
-                                    <span class="icon is-small is-left">
-                                    <i class="fas fa-lock"></i>
-                                    </span>
-                                    <span class="icon is-small is-right has-text-success" v-if="passwordReady">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </p>
-                                </div>
-                                <div class="field">
-                                    <p class="control">
-                                        <button class="button is-info" type="button" @click="updatePassword" :disabled="!passwordReady || loading">Update password</button>
-                                    </p>
-                                </div>
-
                             </div>
                         </div>
                 </div>
@@ -128,8 +81,6 @@ export default {
     data() {
         return {
             profile: {},
-            newPassword: '',
-            confirmPassword: '',
             selectedFile: null,
             uploading: false
         }
@@ -140,9 +91,6 @@ export default {
             'loading',
             'requestError',
             'requestErrorCode']),
-        passwordReady() {
-            return this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
-        },
         displayNameReady(){
             if(this.profile.displayName) return this.profile.displayName.toString().trim().length > 1;
             return false
@@ -161,21 +109,6 @@ export default {
         },
         emailVerification() {
             this.verifyEmail();
-        },
-        async updatePassword() {
-            try {
-                let data = await authService.updatePassword(this.newPassword);
-                if(data) {
-                    notification.success('Password Updated!')
-                    this.newPassword = '';
-                    this.confirmPassword = '';
-                    return
-                }
-                notification.error(error.message)
-                
-            } catch (error) {
-                notification.error(error.message)
-            }
         },
         onFileChanged (event) {
             this.selectedFile = event.target.files[0]

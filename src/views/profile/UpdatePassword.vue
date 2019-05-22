@@ -1,7 +1,7 @@
 <template>
     <div class="profile">
        
-        <Hero title="Secirity" subtitle="Update your password" />
+        <Hero title="Security" subtitle="Update your password" />
 
         <div class="container" style="margin-top:50px;">
             <div class="columns">
@@ -10,7 +10,7 @@
                         <div class="">
                             <div class="card-content ">                               
                                 <div class="field">
-                                    <h1>Update password</h1>
+                                    <h1>Current password</h1>
                                 </div>
 
                                 <div class="field">
@@ -23,6 +23,12 @@
                                             <i class="fas fa-check"></i>
                                         </span>
                                     </p>
+                                </div>
+
+                                <hr>
+
+                                <div class="field">
+                                    <h1>New password</h1>
                                 </div>
 
                                 <div class="field">
@@ -48,13 +54,15 @@
                                         </span>
                                     </p>
                                 </div>
+                               <div class="field" v-if="passwordLength">
+                                    <p class="help is-danger">New password and confirm password doesn't match.</p>
+                                </div>
                                 <div class="field">
                                     <p class="control">
-                                        <button class="button is-info" type="button" @click="updatePassword" :disabled="!passwordReady || loading">Update password</button>
+                                        <button class="button is-info" :class="{'is-loading': loading}" type="button" @click="updatePassword" :disabled="!passwordReady || loading">Update password</button>
                                     </p>
                                 </div>
-
-                            </div>
+                             </div>
                         </div>
                 </div>
                 <div class="column"></div>
@@ -77,26 +85,34 @@ export default {
             oldPassword: '',
             newPassword: '',
             confirmPassword: '',
+            loading: false
         }
     },
     computed: {
         passwordReady() {
-            return this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
+            return this.oldPassword.trim().length > 5 && this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
+        },
+        passwordLength() {
+            return this.newPassword.trim().length > 5 && (this.newPassword.trim() !== this.confirmPassword.trim())
         }
     },
     methods: {
         async updatePassword() {
+            this.loading = true;
             try {
-                let data = await authService.updatePassword(this.newPassword);
+                let data = await authService.updatePassword(this.oldPassword,this.newPassword);
                 if(data) {
                     notification.success('Password Updated!')
                     this.newPassword = '';
                     this.confirmPassword = '';
+                    this.loading = false;
                     return
                 }
+                this.loading = false;
                 notification.error(error.message)
                 
             } catch (error) {
+                this.loading = false;
                 notification.error(error.message)
             }
         }

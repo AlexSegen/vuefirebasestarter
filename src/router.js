@@ -8,6 +8,7 @@ import Login from './views/auth/Login.vue'
 import Register from './views/auth/Register.vue'
 
 import Profile from './views/profile/Index.vue'
+import UpdatePassword from './views/profile/UpdatePassword.vue'
 
 import Home from './views/Home.vue'
 
@@ -70,6 +71,11 @@ const router = new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/update-password',
+      name: 'updatePassword',
+      component: UpdatePassword
     },
     {
       path: '/about',
