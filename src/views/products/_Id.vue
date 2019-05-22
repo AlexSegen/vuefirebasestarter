@@ -33,7 +33,7 @@
 </template>
 <script>
 import notification from '@/libs/notifications'
-import {database} from '@/config/firebase.config'
+import {database, firebase} from '@/config/firebase.config'
 
 import Hero from '@/components/HeroSection.vue'
 
@@ -52,7 +52,8 @@ export default {
         let item = this.itemsObj[this.$route.params.id]
         this.newItem = {
         name: item.name,
-        price: item.price
+        price: item.price,
+        createdAt: item.createdAt
         }
     },
     firebase: {
@@ -66,6 +67,7 @@ export default {
         updateItem() {
             this.loading = true;
             try {
+                this.newItem.updatedAt = firebase.database.ServerValue.TIMESTAMP
                 this.$firebaseRefs.products.child(this.$route.params.id).set(this.newItem);
                 notification.info('Product updated!')
                 this.loading = false;

@@ -58,7 +58,7 @@
 <script>
 import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
-import {database} from '@/config/firebase.config'
+import {database, firebase} from '@/config/firebase.config'
 
 export default {
     name: 'Products',
@@ -83,7 +83,8 @@ export default {
             try {
                 this.$firebaseRefs.products.push({
                     name: this.newItem.name,
-                    price: this.newItem.price
+                    price: this.newItem.price,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
                 })
                 this.newItem.name = '';
                 this.newItem.price = '';
