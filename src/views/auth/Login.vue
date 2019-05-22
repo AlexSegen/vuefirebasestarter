@@ -1,5 +1,6 @@
 <template>
-    <div class="login container">
+    <div class="login">
+        <Hero title="VueFire Starter" subtitle="Vue & Firebase Authentication, CRUD and File Store boilerplate."/>
         <div class="card-auth">
             <div class="card-content ">
                 <div class="field">
@@ -87,7 +88,7 @@ export default {
 
 <style lang="scss">
 .card-auth {
-    max-width: 400px;
+    max-width: 350px;
     margin: 10px auto;
 }
 </style>

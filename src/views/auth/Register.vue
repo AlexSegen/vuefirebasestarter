@@ -1,5 +1,6 @@
 <template>
-    <div class="sign-up container">
+    <div class="sign-up">
+        <Hero title="VueFire Starter" subtitle="Vue & Firebase Authentication, CRUD and File Store boilerplate."/>
         <div class="card-auth">
             <div class="card-content ">
                 <div class="field">
