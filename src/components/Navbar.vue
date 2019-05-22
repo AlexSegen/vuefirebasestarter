@@ -27,7 +27,7 @@
     <div class="navbar-end">
       <div  v-if="loggedIn" class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link" href="javascript:void(0);">
-          <img :src="user.photoURL ? user.photoURL : '/img/icon.png'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> Hello, {{user.displayName}}
+          <img :src="user.photoURL ? user.photoURL : 'https://avatars.dicebear.com/v2/bottts/'+user.email+'.svg?options[colors][]=cyan'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> <template v-if="user.displayName">Hello, {{user.displayName}}</template>  
         </a>
         <div class="navbar-dropdown is-boxed">
           <router-link class="navbar-item" to="/profile">Update Profile</router-link>

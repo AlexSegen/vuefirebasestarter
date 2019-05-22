@@ -130,30 +130,25 @@ const actions = {
 
     async verifyEmail({ commit }) {
 
-        commit('emailVerification', false);
+        commit('emailVerification', true);
         
         try {
 
             const data = await AuthService.verifyEmail();
 
             if(data.success) {
-                alert.success('Verification email has been send!');
+                alert.success('Check your email!');
                 commit('emailVerification', false);
                 return { success: true}
             }
 
             commit('emailVerification', false);
-            alert.error('There was a problem verifying your Email');
+            alert.error('There was a problem sending your link');
             return false
             
         } catch (e) {
-            if (e instanceof AuthenticationError) {
-                commit('updateError', {errorCode: e.errorCode, errorMessage: e.message})
-            }
-
             alert.error(e.message)
             commit('emailVerification', false);
-
             return false
         }
     },

@@ -103,16 +103,20 @@ export default {
                 let data = await authService.updatePassword(this.oldPassword,this.newPassword);
                 if(data) {
                     notification.success('Password Updated!')
+                    this.oldPassword = '';
+                    this.confirmPassword = '';
                     this.newPassword = '';
                     this.confirmPassword = '';
                     this.loading = false;
                     return
                 }
                 this.loading = false;
+                this.oldPassword = '';
                 notification.error(error.message)
                 
             } catch (error) {
                 this.loading = false;
+                this.oldPassword = '';
                 notification.error(error.message)
             }
         }

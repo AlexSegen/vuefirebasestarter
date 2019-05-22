@@ -133,11 +133,14 @@ const AuthService = {
      * @throws AuthenticationError 
      **/
     verifyEmail: function () {
-        return auth.currentUser.sendEmailVerification().then(()=>{
+        try {
+            auth.currentUser.sendEmailVerification();
+            
             return { success: true}
-        }).catch(error => {
+
+        } catch (error) {
             throw new AuthenticationError(error.code, error.message)
-        })
+        }
     },
 
     /**

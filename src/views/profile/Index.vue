@@ -10,11 +10,11 @@
                         <div class="">
                             <div class="card-content ">
 
-                                <div class="notification is-default"  v-if="!user.emailVerified">
+                                <div class="notification bg-primary"  v-if="!user.emailVerified">
                                     <strong>Important:</strong><br>
                                     <p>In order to verify your identity, you need to confirm your email.</p>
                                     <br>
-                                    <p><button class="button is-warning" :class="{'is-loading': loading}" type="button" @click="emailVerification">Send verification email</button></p>
+                                    <p><button class="button is-warning" :class="{'is-loading': loading}" type="button" @click="emailVerification">Send verification link</button></p>
                                 </div>
 
                                 <div class="field">
@@ -23,7 +23,7 @@
                                 <div class="field" >
                                     <figure class="image is-128x128" style="margin: 10px auto;">
                                         <img v-if="profile.photoURL" :src="profile.photoURL" class="is-rounded">
-                                        <img v-else src="http://placehold.it/128x128" class="is-rounded">
+                                        <img v-else :src="'https://avatars.dicebear.com/v2/bottts/'+profile.email+'.svg?options[colors][]=cyan'" class="is-rounded">
                                     </figure>
                                 </div>
                                 <div class="field">
@@ -121,7 +121,7 @@ export default {
             uploadTask.on('state_changed', (snapshot) => {
             }, (error) => {
                 _this.uploading = false;
-                notification.error(error.message + '. Se console for more details');
+                notification.error(error.message + '. See console for more details');
                 console.log(error);
             }, () => {
                 notification.success('File uploaded');
