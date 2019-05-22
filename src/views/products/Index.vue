@@ -63,16 +63,12 @@
   </div>
 </template>
 <script>
-import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
 import {database, firebase} from '@/config/firebase.config'
 import utils from '@/libs/formaters'
 
 export default {
     name: 'Products',
-    components: {
-        Hero
-    },
     data() {
         return {
             loading: false,

@@ -9,11 +9,7 @@
   </div>
 </template>
 <script>
-import Hero from '@/components/HeroSection.vue'
 export default {
-    name: 'about',
-    components: {
-        Hero
-    }
+    name: 'about'
 }
 </script>

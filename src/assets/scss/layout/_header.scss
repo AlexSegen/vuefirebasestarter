@@ -1,0 +1,46 @@
+.navbar-dark {
+    background-color: #090821;
+    background: #090821;
+
+    .navbar-menu,
+    .navbar-end {
+        .navbar-item, .navbar-link {
+            color: $theme03;
+            &:hover,
+            &:focus {
+                color: $theme02;
+                background: rgba($theme, .5);
+            }
+            &.has-dropdown {
+                a {
+                    &:hover,
+                    &:focus {
+                        color: $theme02;
+                    }
+                }
+
+                &:hover, 
+                &:focus {
+                    .navbar-link, .navbar-item.has-dropdown.is-active .navbar-link {
+                        background: rgba($theme, .5);
+                    }
+
+                }
+                    
+                .navbar-dropdown {
+                    a {
+                        color: #090821;
+                        &:hover,
+                        &:focus {
+                            color: #090821;
+                            background: #fff;
+                        }
+                        
+                    }
+
+                }
+            }
+
+        }
+    }
+}

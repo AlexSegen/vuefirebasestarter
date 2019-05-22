@@ -1,6 +1,5 @@
 <template>
   <div class="notfound">
-    <Hero title="Error 404" subtitle="Page not found"/>
     <div class="container" style="margin-top:50px;">
       <div class="columns">
           <div class="column">
@@ -12,11 +11,7 @@
   </div>
 </template>
 <script>
-import Hero from '@/components/HeroSection.vue'
 export default {
     name: 'notfound',
-    components: {
-        Hero
-    }
 }
 </script>

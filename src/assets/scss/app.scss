@@ -1,0 +1,40 @@
+/*----------------------------------------------------------------------
+
+        MASTER STYLESHEET
+
+        Project:        Pixelagil CSS Scaffolding
+        Version:        Alpha 0.0.1
+        Author:         Pixelagil
+        Primary use:    Corporate, Business Themes.
+        Email:                  pixelagil@gmail.com
+        Follow:                 https://www.twitter.com/pixelagil
+        Like:                   https://www.facebook.com/pixelagil
+        Website:                https://www.pixelagil.com
+
+-----------------------------------------------------------------------*/
+
+//Global
+@import "global/variables";
+@import "global/core";
+
+//Helpers
+@import "helpers/bg-colors";
+@import "helpers/text-colors";
+@import "helpers/spacing";
+@import "helpers/typography";
+@import "helpers/positions-displays";
+
+//Elements
+@import "elements/buttons";
+
+//Utils
+@import "utils/animations";
+
+//Layout
+@import "layout/header";
+@import "layout/footer";
+@import "layout/sidebar";
+
+//Pages
+@import "pages/general";
+@import "pages/home";

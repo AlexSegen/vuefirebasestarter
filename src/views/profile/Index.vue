@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="field">
                                     <p class="control has-icons-left has-icons-right">
-                                        <input class="input is-static" type="text" placeholder="Email" v-model="profile.email" readonly>
+                                        <input class="input is-static text-white" type="text" placeholder="Email" v-model="profile.email" readonly>
                                         <span class="icon is-small is-left">
                                         <i class="fas fa-envelope"></i>
                                         </span>
@@ -117,18 +117,14 @@
 
 <script>
 
-import firebase from 'firebase';
+import {firebase} from '@/config/firebase.config';
 
-import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
 import { mapGetters, mapActions } from "vuex";
 import authService from '@/services/auth.service'
 
 export default {
     name: 'profile',
-    components: {
-        Hero
-    },
     data() {
         return {
             profile: {},
@@ -172,6 +168,7 @@ export default {
                 if(data) {
                     notification.success('Password Updated!')
                     this.newPassword = '';
+                    this.confirmPassword = '';
                     return
                 }
                 notification.error(error.message)

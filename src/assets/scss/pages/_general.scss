@@ -1,0 +1,56 @@
+html {
+  font-size: $font-size;
+  background: $body-background;
+}
+body {
+  font-family: $font-family;
+  color: $font-color;
+  font-size: 1.2em;
+  background: $body-background;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-header;
+}
+
+a {
+  color: $primary;
+}
+
+.hero-section {
+  color: #eee;
+  background-color: rgba($theme,.5);
+  .title,
+  .subtitle {
+    color: #eee!important;
+  }
+}
+
+.table {
+  background-color: rgba($theme,.5);
+  color: #eee;
+  td, th {
+    border:none;
+    border-bottom: 1px solid  rgba(#eee,.05);
+  }
+  thead th {
+    border-width: 0 0 2px;
+    color: $theme02;
+  }
+}
+
+.card {
+  background-color: rgba($theme,.5);
+  color: #eee;
+}
+
+.label {
+  color: #eee;
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}

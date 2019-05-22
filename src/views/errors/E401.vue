@@ -12,11 +12,7 @@
   </div>
 </template>
 <script>
-import Hero from '@/components/HeroSection.vue'
 export default {
-    name: 'Forbiden',
-    components: {
-        Hero
-    }
+    name: 'Forbiden'
 }
 </script>

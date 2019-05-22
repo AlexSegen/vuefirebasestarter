@@ -36,13 +36,8 @@
 import notification from '@/libs/notifications'
 import {database, firebase} from '@/config/firebase.config'
 
-import Hero from '@/components/HeroSection.vue'
-
 export default {
     name: 'EditProduct',
-    components: {
-        Hero
-    },
     data() {
         return {
             loading: false,

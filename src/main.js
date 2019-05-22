@@ -15,6 +15,15 @@ Vue.config.productionTip = false
 import 'bulma/css/bulma.css'
 import 'toastmejs/dist/css/toastme.min.css'
 
+import './assets/scss/app.scss'
+
+
+//Global components
+
+import HeroSection from './components/HeroSection.vue'
+
+Vue.component('Hero', HeroSection);
+
 
 //Firebase and Vue Instance
 let app = '';

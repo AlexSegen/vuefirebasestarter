@@ -1,9 +1,9 @@
 <template>
-<nav class="navbar is-transparent">
+<nav class="navbar navbar-dark">
   <div class="container">
   <div class="navbar-brand">
     <router-link class="navbar-item" to="/">
-      <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+      <img src="@/assets/logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
     <a role="button" class="navbar-burger" @click="toggleNav"  :class="{'is-active': isActive}" data-target="navMenu" aria-label="menu" aria-expanded="false">
       <span aria-hidden="true"></span>

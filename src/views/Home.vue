@@ -25,13 +25,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import utils from '@/libs/formaters'
-import Hero from '@/components/HeroSection.vue'
 
 export default {
   name:'Home',
-    components: {
-        Hero
-    },
   computed: {
     ...mapGetters('auth', ['loggedIn', 'user', 'isAdmin'])
   },
