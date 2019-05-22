@@ -25,16 +25,30 @@ const AuthService = {
             TokenService.saveToken(data.user.ra)
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
-            
+/* 
             auth.onAuthStateChanged(function(user) {
                 if (user) {
-                    return user        
+                    
+                    console.log(user)
+
+                    var authenticatedUser = {
+                        displayName: user.displayName,
+                        email: user.email,
+                        emailVerified: user.emailVerified,
+                        photoURL: user.photoURL,
+                        isAnonymous: user.isAnonymous,
+                        uid: user.uid,
+                        providerData: user.providerData
+                    }
+
+                    
+
+                    return authenticatedUser
                 }
             });
-            
-            //ApiService.setHeader()
+ */
+            return data.user
 
-            return auth.currentUser
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
         }
