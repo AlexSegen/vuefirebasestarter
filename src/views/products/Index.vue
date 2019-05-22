@@ -21,7 +21,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <button type="button" @click="addItem" class="button is-primary">Save product</button>
+                            <button type="button" @click="addItem" class="button is-primary" :disabled="!validFields">Save product</button>
                         </div>
                   </div>
               </div>
@@ -29,24 +29,31 @@
           <div class="column is-four-fifths">
               <h2>Product list</h2>
               <hr>
-              <table class="table is-hoverable is-fullwidth">
+              <table class="table is-hovereable is-fullwidth">
                   <thead>
                       <tr>
                           <th>#</th>
                           <th>Name</th>
                           <th>Price</th>
+                          <th>Created At</th>
                           <th>Actions</th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr v-for="(item, index) in products" :key="item['.key']">
-                          <td>{{index + 1}}</td>
-                          <td>{{item.name}}</td>
-                          <td>$ {{item.price}}</td>
-                          <td>
-                              <router-link :to="{ name: 'productDetails', params: {id: item['.key']} }" class="button is-default" type="button">Edit</router-link>
-                              <button class="button is-default" type="button" @click="deleteItem(item['.key'])"><i class="fas fa-trash has-text-danger"></i></button>
-                          </td>
+                      <template v-if="products.length > 0"> 
+                        <tr v-for="(item, index) in products" :key="item['.key']">
+                            <td>{{index + 1}}</td>
+                            <td>{{item.name}}</td>
+                            <td>$ {{item.price}}</td>
+                            <td>{{item.createdAt | formatDate}}</td>
+                            <td>
+                                <router-link :to="{ name: 'productDetails', params: {id: item['.key']} }" class="button is-default" type="button">Edit</router-link>
+                                <button class="button is-default" type="button" @click="deleteItem(item['.key'])"><i class="fas fa-trash has-text-danger"></i></button>
+                            </td>
+                        </tr>
+                      </template>
+                      <tr v-else>
+                          <td class="has-text-centered" colspan="5">Add some products</td>
                       </tr>
                   </tbody>
               </table>
@@ -59,6 +66,7 @@
 import Hero from '@/components/HeroSection.vue'
 import notification from '@/libs/notifications'
 import {database, firebase} from '@/config/firebase.config'
+import utils from '@/libs/formaters'
 
 export default {
     name: 'Products',
@@ -70,12 +78,22 @@ export default {
             loading: false,
             newItem: {
                 name: '',
-                price: ''
+                price: null
             }
         }
     },
     firebase: {
         products: database.ref().child('products')
+    },
+    computed:{
+        validFields(){
+            return this.newItem.name.trim().length > 0 && this.newItem.price
+        }
+    },
+    filters: {
+        formatDate(val) {
+            return utils.formatFirebaseDateAndTime(val);
+        }
     },
     methods: {
         addItem() {

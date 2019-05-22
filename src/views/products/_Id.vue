@@ -6,6 +6,7 @@
       <div class="columns">
           <div class="column">
               <h2>Editing product</h2>
+              <hr>
               <div class="card form">
                   <div class="card-content">
                         <div class="field">
