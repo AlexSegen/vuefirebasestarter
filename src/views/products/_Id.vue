@@ -21,6 +21,9 @@
                                 <input class="input" type="number" placeholder="Product price" v-model="newItem.price" :disabled="loading">
                             </div>
                         </div>
+                        <div class="field" v-if="newItem.updatedAt">
+                             <p class="help is-success">Last update {{newItem.updatedAt | formatDate}}</p>
+                        </div>
                         <div class="field">
                             <router-link to="/products" class="button is-default"><i class="fas fa-chevron-left"></i> Go back</router-link>
                             <button type="button" @click="updateItem" class="button is-primary" :class="{'is-loading': loading}">Save product</button>
@@ -34,6 +37,7 @@
 </template>
 <script>
 import notification from '@/libs/notifications'
+import utils from '@/libs/formaters'
 import {database, firebase} from '@/config/firebase.config'
 
 export default {
@@ -47,9 +51,10 @@ export default {
     created() {
         let item = this.itemsObj[this.$route.params.id]
         this.newItem = {
-        name: item.name,
-        price: item.price,
-        createdAt: item.createdAt
+            name: item.name,
+            price: item.price,
+            createdAt: item.createdAt,
+            updatedAt: item.updatedAt
         }
     },
     firebase: {
@@ -57,6 +62,11 @@ export default {
         itemsObj: {
             source: database.ref('products'),
             asObject: true
+        }
+    },
+    filters: {
+        formatDate(val) {
+            return utils.formatFirebaseDateAndTime(val);
         }
     },
     methods: {
@@ -76,3 +86,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.card.form{
+    max-width: 350px;
+    margin: 10px auto;
+}
+</style>

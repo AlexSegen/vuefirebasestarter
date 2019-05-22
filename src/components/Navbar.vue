@@ -27,7 +27,7 @@
     <div class="navbar-end">
       <div  v-if="loggedIn" class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link" href="javascript:void(0);">
-          <img :src="user.photoURL ? user.photoURL : 'http://placehold.it/24x24'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> Hello, {{user.displayName}}
+          <img :src="user.photoURL ? user.photoURL : '/img/icon.png'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> Hello, {{user.displayName}}
         </a>
         <div class="navbar-dropdown is-boxed">
           <router-link class="navbar-item" to="/profile">Update Profile</router-link>

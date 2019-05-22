@@ -63,6 +63,7 @@
   </div>
 </template>
 <script>
+import {toastme} from 'toastmejs'
 import notification from '@/libs/notifications'
 import {database, firebase} from '@/config/firebase.config'
 import utils from '@/libs/formaters'
@@ -110,15 +111,32 @@ export default {
             }
         },
         deleteItem(key) {
-            this.loading = true;
-            try {
-                 this.$firebaseRefs.products.child(key).remove();
-                 notification.warning('Product deleted!');
-                 this.loading = false;
-            } catch (error) {
-                notification.error(e.message);
-                this.loading = false;
-            }
+
+            var _this = this;
+
+            toastme.yesNoDialog({
+                title: "Hey!",
+                text: "Do you want to delete this item?",
+                textConfirm: "Confirm",
+                textCancel: "Cancel", 
+                showCancel: true,
+                type: "warning",
+                dark: true
+            }).then(function(value) {
+                if (value) {
+                    _this.loading = true;
+                    try {
+                        _this.$firebaseRefs.products.child(key).remove();
+                        notification.warning('Product deleted!');
+                        _this.loading = false;
+                    } catch (error) {
+                        notification.error(e.message);
+                        _this.loading = false;
+                    }
+                }
+            });
+            
+
         }
     }
 }
