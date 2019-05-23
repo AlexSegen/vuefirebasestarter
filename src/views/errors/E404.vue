@@ -1,5 +1,6 @@
 <template>
   <div class="notfound">
+    <Hero title="Error 404" subtitle="Page not found" />
     <div class="container" style="margin-top:50px;">
       <div class="columns">
           <div class="column">
