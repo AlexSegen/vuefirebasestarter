@@ -38,12 +38,20 @@
                         </button>
                     </p>
                 </div>
+                <hr>
+                <div class="field">
+                    <h1>Social login</h1>
+                </div>
+                <div class="field">
+                    <button class="button is-danger" :class="{'is-loading': authenticating}" type="button" @click="handleGoogleLogin"><i class="fab fa-google fa-fw"></i> Sign In with Google</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {firebase, auth} from '@/config/firebase.config'
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -70,7 +78,7 @@ export default {
   },
   methods: {
       ...mapActions('auth', [
-          'login'
+          'login', 'loginSocial'
       ]),
 
       handleLogin() {
@@ -78,6 +86,9 @@ export default {
             this.login({email: this.email, password: this.password})
             this.password = ""
           }
+      },
+      handleGoogleLogin() {
+          this.loginSocial();
       },
       checkNewUser() {
         return this.$route.query.register == 'success'

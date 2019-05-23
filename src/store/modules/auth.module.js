@@ -61,7 +61,32 @@ const actions = {
 
         try {
             const user = await AuthService.login(email, password);
-            console.log(user);
+
+            commit('loginSuccess', user)
+            // Redirect the user to the page he first tried to visit or to the home view
+            router.push(router.history.current.query.redirect || '/');
+
+            alert.info('You are connected!');
+
+            return true
+        } catch (e) {
+            if (e instanceof AuthenticationError) {
+                commit('loginError', {errorCode: e.errorCode, errorMessage: e.message})
+            }
+
+            alert.error(e.message)
+
+            return false
+        }
+    },
+
+    async loginSocial({ commit }) {
+        
+        commit('loginRequest');
+
+        try {
+            const user = await AuthService.loginSocial();
+
             commit('loginSuccess', user)
             // Redirect the user to the page he first tried to visit or to the home view
             router.push(router.history.current.query.redirect || '/');

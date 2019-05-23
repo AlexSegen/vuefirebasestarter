@@ -25,28 +25,7 @@ const AuthService = {
             TokenService.saveToken(data.user.ra)
             TokenService.saveRefreshToken(data.user.refreshToken)
             SetUser.saveUser(data.user);
-/* 
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    
-                    console.log(user)
 
-                    var authenticatedUser = {
-                        displayName: user.displayName,
-                        email: user.email,
-                        emailVerified: user.emailVerified,
-                        photoURL: user.photoURL,
-                        isAnonymous: user.isAnonymous,
-                        uid: user.uid,
-                        providerData: user.providerData
-                    }
-
-                    
-
-                    return authenticatedUser
-                }
-            });
- */
             return data.user
 
         } catch (error) {
@@ -54,6 +33,29 @@ const AuthService = {
         }
     },
 
+        /**
+     * Login the user and store the access token to TokenService. 
+     * 
+     * @returns access_token
+     * @throws AuthenticationError 
+     **/
+    loginSocial: async function () {
+
+        try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            const data = await auth.signInWithPopup(provider)
+
+            TokenService.saveToken(data.user.ra)
+            TokenService.saveRefreshToken(data.user.refreshToken)
+            SetUser.saveUser(data.user);
+
+            return data.user
+
+        } catch (error) {
+            throw new AuthenticationError(error.code, error.message)
+        }
+    },
     /**
      * Register the user and redirects to Login Page. 
      * 
