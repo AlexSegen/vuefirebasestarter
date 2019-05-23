@@ -9,7 +9,7 @@
             &:hover,
             &:focus {
                 color: $theme02;
-                background: rgba($theme, .5);
+                background: #1b1c3c;
             }
             &.has-dropdown {
                 a {
@@ -22,7 +22,7 @@
                 &:hover, 
                 &:focus {
                     .navbar-link, .navbar-item.has-dropdown.is-active .navbar-link {
-                        background: rgba($theme, .5);
+                        background: #1b1c3c;
                     }
 
                 }
@@ -43,4 +43,45 @@
 
         }
     }
+
+
+    @media screen and (max-width: 1087px) {
+        .navbar-menu,
+        .navbar-end {
+            background-color: #090821;
+            .navbar-item, .navbar-link {
+                &.has-dropdown {
+                    a {
+                        &:hover,
+                        &:focus {
+                            color: $theme02;
+                        }
+                    }
+    
+                    &:hover, 
+                    &:focus {
+                        .navbar-link, .navbar-item.has-dropdown.is-active .navbar-link {
+                            background: #1b1c3c;
+                        }
+    
+                    }
+                        
+                    .navbar-dropdown {
+                        a {
+                            color: $primary;
+                            &:hover,
+                            &:focus {
+                                color: $primary;
+                                background: #1b1c3c;
+                            }
+                            
+                        }
+    
+                    }
+                }
+    
+            }
+        }
+    }
+
 }
