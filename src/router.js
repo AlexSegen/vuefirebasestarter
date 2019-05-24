@@ -4,6 +4,10 @@ Vue.use(Router)
 
 import { TokenService, SetUser } from '@/services/storage.service'
 
+import { auth } from './config/firebase.config'
+
+import store from './store'
+
 import Login from './views/auth/Login.vue'
 import Register from './views/auth/Register.vue'
 
@@ -91,12 +95,20 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const isAdmin = to.matched.some(record => record.meta.isAdmin)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = !!TokenService.getToken();
   const loggedAdmin = SetUser.isAdmin();
+
+  auth.onAuthStateChanged(user => {
+    if(user){
+      TokenService.saveToken(user.ra)
+    } else {
+      TokenService.removeToken()
+    }
+  });
 
   if (!isPublic && !loggedIn) {
     return next({
