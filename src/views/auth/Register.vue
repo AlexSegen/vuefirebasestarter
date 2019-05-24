@@ -57,6 +57,11 @@
                         <button class="button is-info" :class="{'is-loading': authenticating}" type="button" @click="handleRegister">Register</button>
                     </p>
                 </div>
+                <hr>
+                
+                <social-auth/>
+
+
             </div>
         </div>
     </div>
@@ -64,9 +69,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import SocialAuth from '@/components/auth/_SocialAuth'
 
 export default {
     name: 'register',
+    components: { SocialAuth },
     data() {
         return {
             email: '',

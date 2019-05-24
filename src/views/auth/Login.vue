@@ -39,23 +39,22 @@
                     </p>
                 </div>
                 <hr>
-                <div class="field">
-                    <h1>Social login</h1>
-                </div>
-                <div class="field">
-                    <button class="button is-danger" :class="{'is-loading': authenticating}" type="button" @click="handleGoogleLogin"><i class="fab fa-google fa-fw"></i> Sign In with Google</button>
-                </div>
+                
+                <social-auth/>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {firebase, auth} from '@/config/firebase.config'
 import { mapGetters, mapActions } from "vuex";
+import SocialAuth from '@/components/auth/_SocialAuth'
+import {firebase, auth} from '@/config/firebase.config'
 
 export default {
     name: 'login',
+    components: { SocialAuth },
     data() {
         return {
             email: '',
@@ -77,18 +76,12 @@ export default {
     }
   },
   methods: {
-      ...mapActions('auth', [
-          'login', 'loginSocial'
-      ]),
-
+      ...mapActions('auth', ['login']),
       handleLogin() {
           if (this.email != '' && this.password != '') {
             this.login({email: this.email, password: this.password})
             this.password = ""
           }
-      },
-      handleGoogleLogin() {
-          this.loginSocial();
       },
       checkNewUser() {
         return this.$route.query.register == 'success'
