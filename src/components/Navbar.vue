@@ -42,7 +42,7 @@
       <div v-else class="navbar-item">
         <div class="field is-grouped">
           <p class="control">
-            <router-link class="bd-tw-button button" to="/login">
+            <router-link class="bd-tw-button button is-primary" to="/login">
               <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
               <span>
                 Login
@@ -50,7 +50,7 @@
             </router-link>
           </p>
           <p class="control">
-            <router-link class="button is-primary" to="/register">
+            <router-link class="button is-info" to="/register">
               <span class="icon"><i class="fas fa-user-plus"></i></span>
               <span>Register</span>
             </router-link>

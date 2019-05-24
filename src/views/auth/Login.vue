@@ -9,10 +9,10 @@
                 <div class="field">
                 <p class="control has-icons-left has-icons-right">
                     <input class="input" type="email" placeholder="Email" v-model="email" :disabled="authenticating">
-                    <span class="icon is-small is-left">
+                    <span class="icon is-left">
                     <i class="fas fa-envelope"></i>
                     </span>
-                    <span class="icon is-small is-right has-text-success" v-if="emailReady">
+                    <span class="icon is-right has-text-success" v-if="emailReady">
                         <i class="fas fa-check"></i>
                     </span>
                 </p>
@@ -20,10 +20,10 @@
                 <div class="field">
                 <p class="control has-icons-left has-icons-right">
                     <input class="input" type="password" placeholder="Password" v-model="password" :disabled="authenticating">
-                    <span class="icon is-small is-left">
+                    <span class="icon is-left">
                     <i class="fas fa-lock"></i>
                     </span>
-                    <span class="icon is-small is-right has-text-success" v-if="passwordReady">
+                    <span class="icon is-right has-text-success" v-if="passwordReady">
                         <i class="fas fa-check"></i>
                     </span>
                 </p>

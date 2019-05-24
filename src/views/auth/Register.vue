@@ -33,7 +33,7 @@
                 </div>
                 <div class="field">
                     <p class="control">
-                        <button class="button is-success" :class="{'is-loading': authenticating}" type="button" @click="handleRegister">Register</button>
+                        <button class="button is-info" :class="{'is-loading': authenticating}" type="button" @click="handleRegister">Register</button>
                     </p>
                 </div>
             </div>
