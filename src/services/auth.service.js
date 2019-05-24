@@ -1,4 +1,4 @@
-import { auth, firebase } from '@/config/firebase.config'
+import { auth, firebase, database } from '@/config/firebase.config'
 import { TokenService, SetUser } from './storage.service'
 
 class AuthenticationError extends Error {
@@ -7,6 +7,15 @@ class AuthenticationError extends Error {
         this.name = this.constructor.name
         this.message = message
         this.errorCode = errorCode
+    }
+}
+
+class PartialProfile {
+    constructor() {
+        this.gender = ""
+        this.dob = ""
+        this.company = ""
+        this.website = ""
     }
 }
 
@@ -22,11 +31,13 @@ const AuthService = {
         try {
             const data = await auth.signInWithEmailAndPassword(email, password)
 
-            TokenService.saveToken(data.user.ra)
-            TokenService.saveRefreshToken(data.user.refreshToken)
-            SetUser.saveUser(data.user);
+            var user = await this.getProfile(data.user);
 
-            return data.user
+            TokenService.saveToken(user.token)
+            TokenService.saveRefreshToken(user.refreshToken)
+            SetUser.saveUser(user);
+
+            return user
 
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
@@ -46,11 +57,13 @@ const AuthService = {
 
             const data = await auth.signInWithPopup(provider)
 
-            TokenService.saveToken(data.user.ra)
-            TokenService.saveRefreshToken(data.user.refreshToken)
-            SetUser.saveUser(data.user);
+            var user = await this.getProfile(data.user);
 
-            return data.user
+            TokenService.saveToken(user.token)
+            TokenService.saveRefreshToken(user.refreshToken)
+            SetUser.saveUser(user);
+
+            return user
 
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
@@ -66,17 +79,15 @@ const AuthService = {
         try {
             const data = await auth.createUserWithEmailAndPassword(email, password)
 
-            TokenService.saveToken(data.user.ra)
-            TokenService.saveRefreshToken(data.user.refreshToken)
-            SetUser.saveUser(data.user);
+            this.createProfile(data.user.uid);
+
+            const user = await this.getProfile(data.user);
+
+            TokenService.saveToken(user.token)
+            TokenService.saveRefreshToken(user.refreshToken)
+            SetUser.saveUser(user);
             
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    return user        
-                }
-            });
-            
-            return auth.currentUser
+            return user
 
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
@@ -101,17 +112,13 @@ const AuthService = {
     
             const data = await currentUser.reauthenticateWithCredential(credential)
 
-            TokenService.saveToken(data.user.ra)
-            TokenService.saveRefreshToken(data.user.refreshToken)
-            SetUser.saveUser(data.user);
-            
-            auth.onAuthStateChanged(function(user) {
-                if (user) {
-                    return user        
-                }
-            });
+            var user = await this.getProfile(data.user);
 
-            return currentUser
+            TokenService.saveToken(user.token)
+            TokenService.saveRefreshToken(user.refreshToken)
+            SetUser.saveUser(user);
+
+            return user
 
         } catch (error) {
             throw new AuthenticationError(error.code, error.message)
@@ -124,17 +131,88 @@ const AuthService = {
      * @returns user
      * @throws AuthenticationError 
      **/
-    updateUser: async function (payload) {
+    updateUser: async function (user) {
 
         try {
             
-            auth.currentUser.updateProfile(payload);
+            auth.currentUser.updateProfile(user);
+
+            database.ref(`users/${user.uid}`).set(user);
 
             SetUser.removeUser();
         
-            SetUser.saveUser(payload);
+            SetUser.saveUser(user);
 
-            return payload
+            return user
+            
+            
+        } catch (error) {
+            throw new AuthenticationError(error.code, error.message)
+        }
+    },
+
+        /**
+     * Creates partial empty user profile in database
+     * 
+     * @returns partial empty user profile
+     * @throws AuthenticationError 
+     **/
+    createProfile: async function (uid) {
+
+        try {
+
+            var partialProfile = new PartialProfile();
+            
+            database.ref(`users/${uid}`).set(partialProfile);
+
+            return partialProfile          
+            
+        } catch (error) {
+            throw new AuthenticationError(error.code, error.message)
+        }
+    },
+
+    /**
+     * Get partial user profile from database
+     * 
+     * @returns full user profile
+     * @throws AuthenticationError 
+     **/
+    getProfile: async function (user) {
+
+        try {
+            
+            //Search for user profile extra info in Database
+            var partialProfile = await database.ref(`users/${user.uid}`).once('value').then(function(snapshot) {
+                return {
+                        gender: (snapshot.val() && snapshot.val().gender) || '',
+                        dob: (snapshot.val() && snapshot.val().dob) || '',
+                        website: (snapshot.val() && snapshot.val().website) || '',
+                        company: (snapshot.val() && snapshot.val().company) || ''
+                    }
+            });
+            
+            //Merge user basic info + user extra info objects
+            var tmpProfile = {...user, ...partialProfile}
+
+            //Mapping user to save it on localstorage.
+            var profile = {
+                uid: tmpProfile.uid,
+                displayName: tmpProfile.displayName,
+                email: tmpProfile.email,
+                emailVerified: tmpProfile.emailVerified,
+                isAnonymous: tmpProfile.isAnonymous,
+                phoneNumber: tmpProfile.phoneNumber,
+                photoURL: tmpProfile.photoURL,
+                token: tmpProfile.ra,
+                refreshToken: tmpProfile.refreshToken,
+                company: tmpProfile.company,
+                dob: tmpProfile.dob,
+                gender: tmpProfile.gender,
+                website: tmpProfile.website
+            }
+
+            return profile
             
             
         } catch (error) {

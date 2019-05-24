@@ -195,7 +195,7 @@ const mutations = {
     },
 
     loginSuccess(state, user) {
-        state.accessToken = user.ra
+        state.accessToken = user.token
         state.user = user
         state.authenticating = false;
     },
@@ -212,7 +212,7 @@ const mutations = {
     },
 
     registerSuccess(state, user) {
-        state.accessToken = user.ra
+        state.accessToken = user.token
         state.user = user
         state.authenticating = false;
     },

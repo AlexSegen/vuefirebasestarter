@@ -43,15 +43,45 @@
                                     </p>
                                 </div>
                                 <div class="field">
-                                <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="text" placeholder="Display name" v-model="profile.displayName" >
-                                    <span class="icon is-small is-left">
-                                    <i class="fas fa-user"></i>
-                                    </span>
-                                    <span class="icon is-small is-right has-text-success" v-if="displayNameReady">
-                                        <i class="fas fa-check"></i>
-                                    </span>
-                                </p>
+                                    <div class="control has-icons-left has-icons-right">
+                                        <input class="input" type="text" placeholder="Display name" v-model="profile.displayName" >
+                                        <span class="icon is-small is-left">
+                                        <i class="fas fa-user"></i>
+                                        </span>
+                                        <span class="icon is-small is-right has-text-success" v-if="displayNameReady">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Gender</label>
+                                    <div class="control">
+                                        <div class="select">
+                                        <select v-model="profile.gender">
+                                            <option value="">Undefined</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Birthay</label>
+                                    <div class="control">
+                                        <input class="input" type="date" v-model="profile.dob">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Website</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Your personal or business website" v-model="profile.website">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Company</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Your company name" v-model="profile.company">
+                                    </div>
                                 </div>
                                 <div class="field">
                                     <p class="control">
