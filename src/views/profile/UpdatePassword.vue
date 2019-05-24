@@ -19,7 +19,7 @@
                                         <span class="icon is-small is-left">
                                         <i class="fas fa-lock"></i>
                                         </span>
-                                        <span class="icon is-small is-right has-text-success" v-if="passwordReady">
+                                        <span class="icon is-small is-right has-text-success" v-if="oldPasswordLength">
                                             <i class="fas fa-check"></i>
                                         </span>
                                     </p>
@@ -54,8 +54,11 @@
                                         </span>
                                     </p>
                                 </div>
-                               <div class="field" v-if="passwordLength">
-                                    <p class="help is-danger">New password and confirm password doesn't match.</p>
+                               <div class="field">
+                                    <div class="tag is-primary" v-if="passwordHasSpecial && passwordReady"><i class="fas fa-lock fa-fw"></i> Your password is super secure</div>
+                                    <p class="help " :class="{'is-success': passwordLength}"><i class="fas fa-fw" :class="{'fa-check': passwordLength}"></i> Must be eight characters or longer</p>
+                                    <p class="help " :class="{'is-success': passwordStrength}"><i class="fas fa-fw" :class="{'fa-check': passwordStrength}"></i> Must contain at least 1 numeric character.</p>
+                                    <p class="help " :class="{'is-success': passwordsMatch}"><i class="fas fa-fw" :class="{'fa-check': passwordsMatch}"></i> Must match confirm password.</p>
                                 </div>
                                 <div class="field">
                                     <p class="control">
@@ -89,15 +92,32 @@ export default {
         }
     },
     computed: {
-        passwordReady() {
-            return this.oldPassword.trim().length > 5 && this.newPassword.trim().length > 5 && (this.newPassword.trim() === this.confirmPassword.trim())
+        oldPasswordLength() {
+            return this.oldPassword.trim().length > 7
+        },
+        passwordsMatch() {
+            return this.newPassword.trim() === this.confirmPassword.trim() && this.passwordLength 
         },
         passwordLength() {
-            return this.newPassword.trim().length > 5 && (this.newPassword.trim() !== this.confirmPassword.trim())
+            var regex = /(?=.{8,})/
+            return regex.test(this.newPassword);
+        },
+        passwordStrength(){
+            var regex = /(?=.*[0-9])/
+            return regex.test(this.newPassword);
+        },
+        passwordHasSpecial(){
+            var regex = /(?=.[!@#\$%\^&])/
+            return regex.test(this.newPassword);
+        },
+        passwordReady() {
+            return this.passwordsMatch && this.passwordLength && this.passwordStrength
         }
     },
     methods: {
         async updatePassword() {
+            if(this.oldPassword.trim().length == 0) return notification.error('Current password is required!');
+
             this.loading = true;
             try {
                 let data = await authService.updatePassword(this.oldPassword,this.newPassword);
