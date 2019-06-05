@@ -45,7 +45,7 @@
             <router-link class="bd-tw-button button is-primary" to="/login">
               <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
               <span>
-                Login
+                Log In
               </span>
             </router-link>
           </p>

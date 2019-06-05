@@ -29,28 +29,34 @@
                 </p>
                 </div>
                 <div class="field">
-                    <p>Don't have an account? <router-link to="/register">Create one</router-link></p>
-                </div>
-                <div class="field">
                     <p class="control">
                         <button class="button is-success" :class="{'is-loading': authenticating}" type="button" @click="handleLogin">
-                        Login
+                        Log In
                         </button>
                     </p>
                 </div>
+                <div class="field">
+                    <p>Or</p>
+                </div>
+                <div class="field">
+                    <social-auth/>
+                </div>
                 <hr>
-                
-                <social-auth/>
-
+                <div class="field">
+                    <p><router-link to="/recover-password">Don't remember your password?</router-link></p>
+                </div>
+                <div class="field">
+                    <p><router-link to="/register">Don't have an account?</router-link></p>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import validate from '@/libs/validations'
 import { mapGetters, mapActions } from "vuex";
 import SocialAuth from '@/components/auth/_SocialAuth'
-import {firebase, auth} from '@/config/firebase.config'
 
 export default {
     name: 'login',
@@ -68,8 +74,7 @@ export default {
           'authenticationErrorCode'
       ]),
     emailReady() {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(this.email).toLowerCase());
+        return validate.email(this.email);
     },
     passwordReady() {
         return this.password.trim().length > 5

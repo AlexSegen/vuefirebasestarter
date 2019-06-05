@@ -10,6 +10,7 @@ import store from './store'
 
 import Login from './views/auth/Login.vue'
 import Register from './views/auth/Register.vue'
+import RecoverPassword from './views/auth/RecoverPassword.vue'
 
 import Profile from './views/profile/Index.vue'
 import UpdatePassword from './views/profile/UpdatePassword.vue'
@@ -42,6 +43,15 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login,
+      meta: {
+        public: true,  // Allow access to even if not logged in
+        onlyWhenLoggedOut: true
+      }
+    },
+    {
+      path: '/recover-password',
+      name: 'recover',
+      component: RecoverPassword,
       meta: {
         public: true,  // Allow access to even if not logged in
         onlyWhenLoggedOut: true
