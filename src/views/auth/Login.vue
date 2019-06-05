@@ -77,7 +77,7 @@ export default {
         return validate.email(this.email);
     },
     passwordReady() {
-        return this.password.trim().length > 5
+        return this.password.trim().length > 7
     }
   },
   methods: {
