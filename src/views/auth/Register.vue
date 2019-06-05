@@ -44,9 +44,11 @@
                     </p>
                 </div>
                 <div class="field">
-                    <div class="tag is-primary" v-if="passwordHasSpecial && passwordReady"><i class="fas fa-lock fa-fw"></i> Your password is super secure</div>
+                    <div class="tag is-primary" v-if="passwordReady"><i class="fas fa-lock fa-fw"></i> Your password is super secure</div>
                     <p class="help " :class="{'is-success': passwordLength}"><i class="fas fa-fw" :class="{'fa-check': passwordLength}"></i> Must be eight characters or longer</p>
-                    <p class="help " :class="{'is-success': passwordStrength}"><i class="fas fa-fw" :class="{'fa-check': passwordStrength}"></i> Must contain at least 1 numeric character.</p>
+                    <p class="help " :class="{'is-success': passwordHasNumericCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasNumericCharacter}"></i> Must contain at least 1 numeric character.</p>
+                    <p class="help " :class="{'is-success': passwordHasAlphabeticalCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasAlphabeticalCharacter}"></i> Must contain at least 1 alphabetic character.</p>
+                    <p class="help " :class="{'is-success': passwordHasSpecialCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasSpecialCharacter}"></i> Must contain at least 1 special character.</p>
                     <p class="help " :class="{'is-success': passwordsMatch}"><i class="fas fa-fw" :class="{'fa-check': passwordsMatch}"></i> Must match confirm password.</p>
                 </div>
                 <div class="field">
@@ -62,7 +64,7 @@
                 </div>
                 <hr>
                 <div class="field">
-                    <p><router-link to="/login">Already have an account?</router-link></p>
+                    <p><router-link :to="{ name: 'login'}">Already have an account?</router-link></p>
                 </div>
 
             </div>
@@ -98,19 +100,19 @@ export default {
             return this.password.trim() === this.confirmPassword.trim() && this.passwordLength 
         },
         passwordLength() {
-            var regex = /(?=.{8,})/
-            return regex.test(this.password);
+            return validate.password.Length(this.password)
         },
-        passwordStrength(){
-            var regex = /(?=.*[0-9])/
-            return regex.test(this.password);
+        passwordHasNumericCharacter(){
+            return validate.password.HasNumericCharacter(this.password)
         },
-        passwordHasSpecial(){
-            var regex = /(?=.[!@#\$%\^&])/
-            return regex.test(this.password);
+        passwordHasAlphabeticalCharacter(){
+            return validate.password.HasAlphabeticalCharacter(this.password)
+        },
+        passwordHasSpecialCharacter(){
+            return validate.password.HasSpecialCharacter(this.password)
         },
         passwordReady() {
-            return this.passwordsMatch && this.passwordLength && this.passwordStrength
+            return this.passwordsMatch && this.passwordLength && this.passwordHasNumericCharacter
         }
     },
     methods: {

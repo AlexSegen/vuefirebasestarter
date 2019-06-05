@@ -55,10 +55,12 @@
                                     </p>
                                 </div>
                                <div class="field">
-                                    <div class="tag is-primary" v-if="passwordHasSpecial && passwordReady"><i class="fas fa-lock fa-fw"></i> Your password is super secure</div>
-                                    <p class="help " :class="{'is-success': passwordLength}"><i class="fas fa-fw" :class="{'fa-check': passwordLength}"></i> Must be eight characters or longer</p>
-                                    <p class="help " :class="{'is-success': passwordStrength}"><i class="fas fa-fw" :class="{'fa-check': passwordStrength}"></i> Must contain at least 1 numeric character.</p>
-                                    <p class="help " :class="{'is-success': passwordsMatch}"><i class="fas fa-fw" :class="{'fa-check': passwordsMatch}"></i> Must match confirm password.</p>
+                    <div class="tag is-primary" v-if="passwordReady"><i class="fas fa-lock fa-fw"></i> Your password is super secure</div>
+                    <p class="help " :class="{'is-success': passwordLength}"><i class="fas fa-fw" :class="{'fa-check': passwordLength}"></i> Must be eight characters or longer</p>
+                    <p class="help " :class="{'is-success': passwordHasNumericCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasNumericCharacter}"></i> Must contain at least 1 numeric character.</p>
+                    <p class="help " :class="{'is-success': passwordHasAlphabeticalCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasAlphabeticalCharacter}"></i> Must contain at least 1 alphabetic character.</p>
+                    <p class="help " :class="{'is-success': passwordHasSpecialCharacter}"><i class="fas fa-fw" :class="{'fa-check': passwordHasSpecialCharacter}"></i> Must contain at least 1 special character.</p>
+                    <p class="help " :class="{'is-success': passwordsMatch}"><i class="fas fa-fw" :class="{'fa-check': passwordsMatch}"></i> Must match confirm password.</p>
                                 </div>
                                 <div class="field">
                                     <p class="control">
@@ -77,8 +79,9 @@
 
 <script>
 
-import {firebase} from '@/config/firebase.config';
+import validate from '@/libs/validations'
 import notification from '@/libs/notifications'
+import {firebase} from '@/config/firebase.config';
 import authService from '@/services/auth.service'
 
 export default {
@@ -99,19 +102,19 @@ export default {
             return this.newPassword.trim() === this.confirmPassword.trim() && this.passwordLength 
         },
         passwordLength() {
-            var regex = /(?=.{8,})/
-            return regex.test(this.newPassword);
+            return validate.password.Length(this.newPassword)
         },
-        passwordStrength(){
-            var regex = /(?=.*[0-9])/
-            return regex.test(this.newPassword);
+        passwordHasNumericCharacter(){
+            return validate.password.HasNumericCharacter(this.newPassword)
         },
-        passwordHasSpecial(){
-            var regex = /(?=.[!@#\$%\^&])/
-            return regex.test(this.newPassword);
+        passwordHasAlphabeticalCharacter(){
+            return validate.password.HasAlphabeticalCharacter(this.newPassword)
+        },
+        passwordHasSpecialCharacter(){
+            return validate.password.HasSpecialCharacter(this.newPassword)
         },
         passwordReady() {
-            return this.passwordsMatch && this.passwordLength && this.passwordStrength
+            return this.passwordsMatch && this.passwordLength && this.passwordHasNumericCharacter
         }
     },
     methods: {
