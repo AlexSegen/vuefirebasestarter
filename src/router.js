@@ -50,7 +50,7 @@ const router = new Router({
     },
     {
       path: '/recover-password',
-      name: 'recover',
+      name: 'recoverPassword',
       component: RecoverPassword,
       meta: {
         public: true,  // Allow access to even if not logged in

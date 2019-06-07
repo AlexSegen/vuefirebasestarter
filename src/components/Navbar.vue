@@ -2,7 +2,7 @@
 <nav class="navbar navbar-dark">
   <div class="container">
   <div class="navbar-brand">
-    <router-link class="navbar-item" to="/">
+    <router-link class="navbar-item" :to="{ name: 'home'}">
       <img src="@/assets/logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
     <a role="button" class="navbar-burger" @click="toggleNav"  :class="{'is-active': isActive}" data-target="navMenu" aria-label="menu" aria-expanded="false">
@@ -14,11 +14,11 @@
 
   <div class="navbar-menu" :class="{'is-active': isActive}" id="navMenu">
     <div class="navbar-start">
-      <router-link class="navbar-item" to="/">Home</router-link>
-      <router-link class="navbar-item" to="/about">About</router-link>
+      <router-link class="navbar-item" :to="{ name: 'home'}">Home</router-link>
+      <router-link class="navbar-item" :to="{ name: 'about'}">About</router-link>
 
       <template  v-if="loggedIn">
-      <router-link class="navbar-item" to="/products">Products</router-link>
+      <router-link class="navbar-item" :to="{ name: 'products'}">Products</router-link>
       </template>
 
     </div>
@@ -30,8 +30,8 @@
           <img :src="user.photoURL ? user.photoURL : 'https://avatars.dicebear.com/v2/bottts/'+user.email+'.svg?options[colors][]=cyan'" class="image is-24x24 is-rounded" style="margin-right: 5px;"> <template v-if="user.displayName">Hello, {{user.displayName}}</template>  
         </a>
         <div class="navbar-dropdown is-boxed">
-          <router-link class="navbar-item" to="/profile">Update Profile</router-link>
-          <router-link class="navbar-item" to="/update-password">Update password</router-link>
+          <router-link class="navbar-item" :to="{ name: 'profile'}">Update Profile</router-link>
+          <router-link class="navbar-item" :to="{ name: 'updatePassword'}">Update password</router-link>
           <hr class="navbar-divider">
           <a class="navbar-item" href="javascript:void(0);" @click="signOut">
             Logout 
@@ -42,7 +42,7 @@
       <div v-else class="navbar-item">
         <div class="field is-grouped">
           <p class="control">
-            <router-link class="bd-tw-button button is-primary" to="/login">
+            <router-link class="bd-tw-button button is-primary" :to="{ name: 'login'}">
               <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
               <span>
                 Log In
@@ -50,7 +50,7 @@
             </router-link>
           </p>
           <p class="control">
-            <router-link class="button is-info" to="/register">
+            <router-link class="button is-info" :to="{ name: 'register'}">
               <span class="icon"><i class="fas fa-user-plus"></i></span>
               <span>Register</span>
             </router-link>

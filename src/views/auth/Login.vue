@@ -43,10 +43,10 @@
                 </div>
                 <hr>
                 <div class="field">
-                    <p><router-link to="/recover-password">Don't remember your password?</router-link></p>
+                    <p><router-link :to='{ name: "recoverPassword" }'>Don't remember your password?</router-link></p>
                 </div>
                 <div class="field">
-                    <p><router-link to="/register">Don't have an account?</router-link></p>
+                    <p><router-link :to="{ name: 'register'}">Don't have an account?</router-link></p>
                 </div>
             </div>
         </div>
