@@ -71,14 +71,14 @@ export default {
     },
     filters: {
         formatDate(val) {
-            return utils.formatDateAndTime(val);
+            return utils.formatFirebaseDate(val.seconds);
         }
     },
     methods: {
         updateItem() {
             this.loading = true;
             try {
-                this.newItem.updatedAt = new Date();
+                this.newItem.updatedAt = firebase.firestore.Timestamp.fromDate(new Date())
                 this.$firebaseRefs.products.child(this.$route.params.id).set(this.newItem);
                 notification.info('Product updated!')
                 this.loading = false;

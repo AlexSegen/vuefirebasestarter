@@ -89,7 +89,7 @@ export default {
     },
     filters: {
         formatDate(val) {
-            return utils.formatDateAndTime(val);
+            return utils.formatFirebaseDate(val.seconds);
         }
     },
     methods: {
@@ -99,15 +99,15 @@ export default {
                 this.$firebaseRefs.products.push({
                     name: this.newItem.name,
                     price: this.newItem.price,
-                    createdAt: new Date(),
+                    createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
                     updatedAt: null
                 })
                 this.newItem.name = '';
                 this.newItem.price = '';
-                notification.success('Product added!');
                 this.loading = false;
+                notification.success('Product added!');
             } catch (error) {
-                notification.error(e.message);
+                notification.error(error.message);
                 this.loading = false;
             }
         },
