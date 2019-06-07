@@ -20,6 +20,11 @@ import Home from './views/Home.vue'
 import Products from './views/products/Index.vue'
 import ProductDetails from './views/products/_Id.vue'
 
+import Blog from './views/blog/Index.vue'
+import CreatePost from './views/blog/Create.vue'
+import EditPost from './views/blog/EditPost.vue'
+import PostDetails from './views/blog/_Id.vue'
+
 import E401 from './views/errors/E401.vue'
 import E404 from './views/errors/E404.vue'
 
@@ -80,6 +85,32 @@ const router = new Router({
       path: '/products/:id',
       name: 'productDetails',
       component: ProductDetails
+    },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: Blog,
+      meta: {
+        public: true
+      }
+    },
+    {
+      path: '/blog/create',
+      name: 'createPost',
+      component: CreatePost
+    },
+    {
+      path: '/blog/:id',
+      name: 'postDetails',
+      component: PostDetails,
+      meta: {
+        public: true
+      }
+    },
+    {
+      path: '/blog/edit/:id',
+      name: 'editPost',
+      component: EditPost
     },
     {
       path: '/profile',

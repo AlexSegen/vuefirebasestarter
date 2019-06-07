@@ -18,8 +18,19 @@
       <router-link class="navbar-item" :to="{ name: 'about'}">About</router-link>
 
       <template  v-if="loggedIn">
-      <router-link class="navbar-item" :to="{ name: 'products'}">Products</router-link>
+        <router-link class="navbar-item" :to="{ name: 'products'}">Products</router-link>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <router-link class="navbar-link" to="/blog">
+            Blog
+          </router-link>
+          <div class="navbar-dropdown is-boxed">
+            <router-link class="navbar-item" :to="{ name: 'createPost'}">Create new post</router-link>
+          </div>
+        </div>
       </template>
+
+      <router-link v-else class="navbar-item" :to="{ name: 'blog'}"> Blog</router-link>
 
     </div>
 
