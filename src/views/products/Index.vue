@@ -89,7 +89,7 @@ export default {
     },
     filters: {
         formatDate(val) {
-            return utils.formatFirebaseDateAndTime(val);
+            return utils.formatDateAndTime(val);
         }
     },
     methods: {
@@ -99,7 +99,8 @@ export default {
                 this.$firebaseRefs.products.push({
                     name: this.newItem.name,
                     price: this.newItem.price,
-                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                    createdAt: new Date(),
+                    updatedAt: null
                 })
                 this.newItem.name = '';
                 this.newItem.price = '';

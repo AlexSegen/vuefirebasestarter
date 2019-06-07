@@ -45,7 +45,12 @@ export default {
     data() {
         return {
             loading: false,
-            newItem: {}
+            newItem: {
+                name: "",
+                price: "",
+                createdAt: "",
+                updatedAt: ""
+            }
         }
     },
     created() {
@@ -66,14 +71,14 @@ export default {
     },
     filters: {
         formatDate(val) {
-            return utils.formatFirebaseDateAndTime(val);
+            return utils.formatDateAndTime(val);
         }
     },
     methods: {
         updateItem() {
             this.loading = true;
             try {
-                this.newItem.updatedAt = firebase.database.ServerValue.TIMESTAMP
+                this.newItem.updatedAt = new Date();
                 this.$firebaseRefs.products.child(this.$route.params.id).set(this.newItem);
                 notification.info('Product updated!')
                 this.loading = false;
