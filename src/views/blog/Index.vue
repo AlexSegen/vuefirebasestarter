@@ -10,12 +10,10 @@
               <div v-if="posts.length == 0">No entries yet</div>
                 <div v-else class="card" v-for="item in posts" :key="item['.key']" style="margin-bottom: 10px;">
                     <div class="card-content">
-                        <div class="content">
                         <p class="card-header-title has-text-white">
                             {{item.title}}
                         </p>
                         Created <time>{{ item.createdAt | formatDate }} <br> <span class="has-text-primary">by {{ item.author || "Anonymous" }}</span> </time>
-                        </div>
                     </div>
                     <footer class="card-footer">
                         <router-link :to="{ name: 'postDetails', params: {id: item['.key']} }" class="card-footer-item" type="button">More</router-link>
@@ -70,14 +68,14 @@ export default {
             }).then(function(value) {
                 if (value) {
                     _this.loading = true;
-                    try {
-                        _this.$firebaseRefs.posts.child(key).remove();
+                    _this.$firebaseRefs.posts.child(key).remove().then(()=> {
                         notification.warning('Post deleted!');
-                        _this.loading = false;
-                    } catch (error) {
+                    }).catch(error => {
+                        if(error.message == "PERMISSION_DENIED: Permission denied") return notification.error("You are not authorized to delete this Post.");
                         notification.error(error.message);
+                    }).finally(() => {
                         _this.loading = false;
-                    }
+                    });
                 }
             });
         }

@@ -18,6 +18,9 @@ import 'toastmejs/dist/css/toastme.min.css'
 import './assets/scss/app.scss'
 
 
+import Editor from '@tinymce/tinymce-vue';
+Vue.component('editor', Editor);
+
 //Global components
 
 import HeroSection from './components/HeroSection.vue'

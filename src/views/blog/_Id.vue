@@ -7,7 +7,9 @@
           <div class="column">
               <router-link :to="{ name: 'blog'}">Go back</router-link>
               <hr>
-              {{newItem.content}}
+              <div class="card card-content post content" v-html="newItem.content">
+
+              </div>
               <hr>
               Created {{newItem.createdAt | formatDate}}
           </div>
@@ -62,8 +64,9 @@ export default {
 </script>
 
 <style scoped>
-.card.form{
-    max-width: 350px;
-    margin: 10px auto;
+
+.card.card-content.post {
+    color: #737373;
+    background-color:  #fff;
 }
 </style>

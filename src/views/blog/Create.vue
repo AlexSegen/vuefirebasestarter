@@ -7,7 +7,7 @@
           <div class="column">
               <h2>Add new Post</h2>
               <hr>
-              <div class="card form">
+              <div class="card">
                   <div class="card-content">
                         <div class="field">
                             <label class="label">Title</label>
@@ -18,7 +18,9 @@
                         <div class="field">
                             <label class="label">Content</label>
                             <div class="control">
-                                <textarea class="textarea" type="text" placeholder="Post content" v-model="newItem.content"></textarea>
+                                <editor api-key="k23wuss5ytfddyd77xj28bq76u9tt9u2ehwj7hbldi0xuerd" :init="{plugins: 'wordcount'}" v-model="newItem.content"></editor>
+
+                                <!-- <textarea class="textarea" type="text" placeholder="Post content" v-model="newItem.content"></textarea> -->
                             </div>
                         </div>
                         <div class="field">
