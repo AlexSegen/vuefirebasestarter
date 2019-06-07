@@ -1,7 +1,4 @@
 import moment from 'moment'
-import firebase from 'firebase'
-
-
 export default {
     buildDate(val) {
 
