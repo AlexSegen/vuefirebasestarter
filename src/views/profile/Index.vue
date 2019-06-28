@@ -141,20 +141,26 @@ export default {
             this.verifyEmail();
         },
         onFileChanged (event) {
-            const file = event.target.files[0];
             
-            if(!file) return
+            try {
+                
+                const file = event.target.files[0];
 
-            if(file.type == 'image/png' || file.type == 'image/jpeg') {
-                if(file.size < 2000000) {
-                this.selectedFile = file;
-                this.onUpload()
+                if(file.type == 'image/png' || file.type == 'image/jpeg') {
+                    if(file.size < 2000000) {
+                    this.selectedFile = file;
+                    this.onUpload()
+                    } else {
+                        notification.error('This file is too large. Your avatar must be 2MB max. ');
+                    }
                 } else {
-                    notification.error('This file is too large. Your avatar must be 2MB max. ');
+                    notification.error('Hey! Only PNG or JPEG files are allowed.');
                 }
-            } else {
-                notification.error('Hey! Only PNG or JPEG files are allowed.');
+                
+            } catch (error) {
+                return false
             }
+
         },
         onUpload() {
             var _this = this;
