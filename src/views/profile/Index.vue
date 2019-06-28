@@ -29,7 +29,7 @@
                                 <div class="field">
                                     <div class="file is-default is-small">
                                         <label class="file-label">
-                                        <input class="file-input" type="file" name="resume" @change="onFileChanged" :disabled="uploading">
+                                        <input class="file-input" type="file" name="resume" @change="onFileChanged" :disabled="uploading" accept="image/x-png,image/jpeg" />
                                         <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
                                         </label>
                                     </div>
