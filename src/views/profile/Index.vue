@@ -30,7 +30,7 @@
                                     <div class="file is-default is-small">
                                         <label class="file-label">
                                         <input class="file-input" type="file" name="resume" @change="onFileChanged" :disabled="uploading" accept="image/x-png,image/jpeg" />
-                                        <span class="file-cta"><span class="file-icon"><i class="fas fa-upload"></i></span> <span class="file-label">Update Avatar</span></span>
+                                        <span class="file-cta"><span class="file-icon"><i class="fas " :class="uploading ? 'fa-spinner fa-spin':'fa-upload'"></i></span> <span class="file-label">Update Avatar</span></span>
                                         </label>
                                     </div>
                                 </div>
@@ -141,8 +141,20 @@ export default {
             this.verifyEmail();
         },
         onFileChanged (event) {
-            this.selectedFile = event.target.files[0]
-            this.onUpload()
+            const file = event.target.files[0];
+            
+            if(!file) return
+
+            if(file.type == 'image/png' || file.type == 'image/jpeg') {
+                if(file.size < 2000000) {
+                this.selectedFile = file;
+                this.onUpload()
+                } else {
+                    notification.error('This file is too large. Your avatar must be 2MB max. ');
+                }
+            } else {
+                notification.error('Hey! Only PNG or JPEG files are allowed.');
+            }
         },
         onUpload() {
             var _this = this;
@@ -154,7 +166,6 @@ export default {
                 notification.error(error.message + '. See console for more details');
                 console.log(error);
             }, () => {
-                notification.success('File uploaded');
                 uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                     _this.profile.photoURL = downloadURL;
                     _this.updateProfile();
