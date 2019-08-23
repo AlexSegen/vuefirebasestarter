@@ -2,9 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
 
-import { TokenService, SetUser } from '@/services/storage.service'
+import {
+  TokenService,
+  SetUser
+} from '@/services/storage.service'
 
-import { auth } from './config/firebase.config'
+import {
+  auth
+} from './config/firebase.config'
 
 import store from './store'
 
@@ -33,8 +38,7 @@ import E404 from './views/errors/E404.vue'
 const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: '*',
       name: 'E404',
       component: E404
@@ -49,7 +53,7 @@ const router = new Router({
       name: 'login',
       component: Login,
       meta: {
-        public: true,  // Allow access to even if not logged in
+        public: true, // Allow access to even if not logged in
         onlyWhenLoggedOut: true
       }
     },
@@ -58,7 +62,7 @@ const router = new Router({
       name: 'recoverPassword',
       component: RecoverPassword,
       meta: {
-        public: true,  // Allow access to even if not logged in
+        public: true, // Allow access to even if not logged in
         onlyWhenLoggedOut: true
       }
     },
@@ -67,7 +71,7 @@ const router = new Router({
       name: 'register',
       component: Register,
       meta: {
-        public: true,  // Allow access to even if not logged in
+        public: true, // Allow access to even if not logged in
         onlyWhenLoggedOut: true
       }
     },
@@ -100,7 +104,7 @@ const router = new Router({
       component: CreatePost
     },
     {
-      path: '/blog/:id',
+      path: '/blog/:slug-:id',
       name: 'postDetails',
       component: PostDetails,
       meta: {
@@ -128,7 +132,7 @@ const router = new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      component: () => import( /* webpackChunkName: "about" */ './views/About.vue'),
       meta: {
         public: true
       }
@@ -144,7 +148,7 @@ router.beforeEach(async (to, from, next) => {
   const loggedAdmin = SetUser.isAdmin();
 
   auth.onAuthStateChanged(user => {
-    if(user){
+    if (user) {
       TokenService.saveToken(user.ra)
     } else {
       TokenService.removeToken()
@@ -153,8 +157,10 @@ router.beforeEach(async (to, from, next) => {
 
   if (!isPublic && !loggedIn) {
     return next({
-      path:'/login',
-      query: {redirect: to.fullPath}  // Store the full path to redirect the user to after login
+      path: '/login',
+      query: {
+        redirect: to.fullPath
+      } // Store the full path to redirect the user to after login
     });
   }
 
@@ -164,9 +170,11 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (loggedIn) {
-    if(!loggedAdmin && isAdmin){
-      return next({path:'/not-authorized'});
-    } else if (loggedAdmin && isAdmin){
+    if (!loggedAdmin && isAdmin) {
+      return next({
+        path: '/not-authorized'
+      });
+    } else if (loggedAdmin && isAdmin) {
       next()
     } else {
       next()

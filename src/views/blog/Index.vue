@@ -16,7 +16,7 @@
                         Created <time>{{ item.createdAt | formatDate }} <br> <span class="has-text-primary">by {{ item.author || "Anonymous" }}</span> </time>
                     </div>
                     <footer class="card-footer">
-                        <router-link :to="{ name: 'postDetails', params: {id: item['.key']} }" class="card-footer-item" type="button">More</router-link>
+                        <router-link :to="{ name: 'postDetails', params: {id: item['.key'], slug: item.slug} }" class="card-footer-item" type="button">More</router-link>
                         <template v-if="user && user.uid === item.owner">
                             <router-link :to="{ name: 'editPost', params: {id: item['.key']} }" class="card-footer-item" type="button">Edit</router-link>
                             <a href="javascript:void(0);" class="card-footer-item" @click="deleteItem(item['.key'])">Delete</a>
